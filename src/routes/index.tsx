@@ -6,6 +6,9 @@ import anjo from "@/assets/fundo-anjo.jpg.asset.json";
 import cruz from "@/assets/fundo-cruz.jpg.asset.json";
 import { Scanner } from "@/components/Scanner";
 import { DESIGNS, HaloDashboard, type DesignId } from "@/components/HaloDashboard";
+import { ThemeGallery } from "@/components/ThemeGallery";
+import { Button } from "@/components/ui/button";
+import { useThemeSelection } from "@/hooks/use-theme-selection";
 import pomba from "@/assets/fundo-pomba.jpg.asset.json";
 import b1 from "@/assets/bencao-1.mp3.asset.json";
 import b2 from "@/assets/bencao-2.mp3.asset.json";
@@ -140,9 +143,10 @@ function Stat({ icon: Icon, label, value, unit, pct }: { icon: typeof Droplet; l
 
 function App() {
   const [tab, setTab] = useState<"home" | "cockpit" | "louvor" | "scanner" | "temas" | "prompts">("home");
-  const [themeId, setThemeId] = useState("jesus");
-  const [animated, setAnimated] = useState(true);
-  const [design, setDesign] = useState<DesignId | "classico">("anjos");
+  const { activeTheme, remaining, choose, stopTrial, notice } = useThemeSelection();
+  const themeId = activeTheme.background;
+  const animated = activeTheme.premium;
+  const design = activeTheme.design;
   const [now, setNow] = useState<Date | null>(null);
   const [verse, setVerse] = useState(0);
   const [radio, setRadio] = useState(0);
@@ -157,9 +161,6 @@ function App() {
   const tel = useTelemetry();
 
   useEffect(() => {
-    const s = localStorage.getItem("adora-theme"); if (s) setThemeId(s);
-    const ds = localStorage.getItem("adora-design"); if (ds) setDesign(ds as DesignId | "classico");
-    const a = localStorage.getItem("adora-anim"); if (a) setAnimated(a === "1");
     setNow(new Date());
     const id = setInterval(() => setNow(new Date()), 1000);
     const day = Math.floor(Date.now() / 86400000); setVerse(day % VERSES.length);
@@ -167,9 +168,6 @@ function App() {
     const v = setInterval(() => setVerse((x) => (x + 1) % VERSES.length), 30000);
     return () => { clearInterval(id); clearInterval(v); };
   }, []);
-  useEffect(() => { localStorage.setItem("adora-theme", themeId); }, [themeId]);
-  useEffect(() => { localStorage.setItem("adora-design", design); }, [design]);
-  useEffect(() => { localStorage.setItem("adora-anim", animated ? "1" : "0"); }, [animated]);
   useEffect(() => { if (audio.current) audio.current.volume = vol / 100; }, [vol]);
   const playToken = useRef(0);
   const stopRadio = () => {
@@ -197,10 +195,9 @@ function App() {
   const haloDesign = DESIGNS.find((d) => d.id === design);
   const theme = halo && haloDesign ? { ...baseTheme, accent: haloDesign.accent } : baseTheme;
   const picker = (
-    <div className="flex flex-wrap gap-2">
-      {([["classico", "Clássico"], ...DESIGNS.map((d) => [d.id, d.name])] as [string, string][]).map(([id, name]) => (
-        <button key={id} onClick={() => setDesign(id as DesignId | "classico")} className={`glass rounded-full px-4 py-1.5 text-sm ${design === id ? "ring-1 ring-primary text-primary" : "text-muted-foreground"}`}>{name}</button>
-      ))}
+    <div className="flex flex-wrap items-center gap-3">
+      <Button variant="outline" onClick={() => setTab("temas")}><Palette />Temas</Button>
+      <span className="text-sm text-primary">{activeTheme.name} · {animated ? "Premium" : "Free"}</span>
     </div>
   );
   const particles = useMemo(() => Array.from({ length: 24 }, (_, i) => ({ left: (i * 37) % 100, dur: 8 + (i % 7) * 2, delay: (i % 9) * 1.3 })), []);
@@ -224,11 +221,16 @@ function App() {
       </aside>
 
       <main className={`${worship ? "hidden" : ""} absolute left-32 right-4 top-3 bottom-3 z-10 flex flex-col`}>
-        <header className="flex items-center justify-between">
-          <div><h1 className="font-display text-3xl font-extrabold">Adora<span className="text-primary">Drive</span></h1><p className="text-xs tracking-[0.3em] text-muted-foreground">FÉ EM CADA TRAJETO</p></div>
+        <header className="flex items-center justify-between gap-2">
+          <div><h1 className="font-display text-xl sm:text-3xl font-extrabold">Adora<span className="text-primary">Drive</span></h1><p className="text-xs tracking-[0.3em] text-muted-foreground">FÉ EM CADA TRAJETO</p></div>
           <p className="hidden md:block font-script text-3xl text-foreground/90">Deus guia, cuida e abençoa!</p>
-          <div className="flex items-center gap-4 text-xl"><button onClick={() => setWorship(true)} className="glass rounded-lg px-3 py-1.5 text-base flex items-center gap-2 text-primary"><Flower2 size={18} />Modo Adoração</button><button aria-label="Bênção da viagem" onClick={() => setBlessing(PRAYERS[Math.floor(Math.random() * PRAYERS.length)]!)} className="text-primary"><HandHeart size={22} /></button><Bluetooth size={20} /><Wifi size={20} /><span className="font-display">{now ? now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "--:--"}</span></div>
+          <div className="hidden sm:flex items-center gap-4 text-xl"><button onClick={() => setWorship(true)} className="glass rounded-lg px-3 py-1.5 text-base flex items-center gap-2 text-primary"><Flower2 size={18} />Modo Adoração</button><button aria-label="Bênção da viagem" onClick={() => setBlessing(PRAYERS[Math.floor(Math.random() * PRAYERS.length)]!)} className="text-primary"><HandHeart size={22} /></button><Bluetooth size={20} /><Wifi size={20} /><span className="font-display">{now ? now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "--:--"}</span></div>
         </header>
+
+        {(remaining > 0 || notice) && <div role="status" className="mt-3 shrink-0 flex flex-wrap items-center justify-between gap-2 rounded-lg border bg-background/95 px-4 py-2 text-sm">
+          <span>{remaining > 0 ? `Teste Premium · ${Math.floor(Math.ceil(remaining / 1000) / 60)}:${String(Math.ceil(remaining / 1000) % 60).padStart(2, "0")}` : notice}</span>
+          {remaining > 0 && <Button variant="ghost" size="sm" onClick={stopTrial}><X />Encerrar teste</Button>}
+        </div>}
 
         <section className="flex-1 min-h-0 mt-4 overflow-auto">
           {halo && (
@@ -324,22 +326,7 @@ function App() {
             </div>
           )}
 
-          {tab === "temas" && (
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="font-display text-2xl">Escolha seu tema</h2>
-                <label className="glass rounded-lg px-4 py-2 flex items-center gap-3 cursor-pointer"><input type="checkbox" checked={animated} onChange={(e) => setAnimated(e.target.checked)} className="accent-[var(--primary)] h-5 w-5" />Fundo animado</label>
-              </div>
-              <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-                {THEMES.map((t) => (
-                  <button key={t.id} onClick={() => setThemeId(t.id)} className={`glass rounded-lg overflow-hidden text-left transition ${t.id === themeId ? "ring-2 ring-primary scale-[1.02]" : "hover:scale-[1.02]"}`}>
-                    <img src={t.img} alt={t.name} className="aspect-video w-full object-cover" />
-                    <div className="p-3 flex items-center justify-between"><span className="text-lg font-bold">{t.name}</span><span className="h-4 w-4 rounded-full" style={{ background: t.accent }} /></div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+          {tab === "temas" && <ThemeGallery activeId={activeTheme.id} onSelect={(id) => { choose(id); setTab("home"); }} />}
 
           {tab === "prompts" && (
             <div className="grid md:grid-cols-2 gap-4">

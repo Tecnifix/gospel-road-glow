@@ -3,12 +3,17 @@ import maos from "@/assets/design-maos.jpg.asset.json";
 import jesus from "@/assets/design-jesus.jpg.asset.json";
 import pomba from "@/assets/design-pomba.jpg.asset.json";
 import anjosVideo from "@/assets/anjos-nuvens-continuo.mp4.asset.json";
+import anjosOriginal from "@/assets/anjos-original.jpg.asset.json";
+import anjosOriginalVideo from "@/assets/anjos-loop-suave.mp4.asset.json";
+import anjosClassicos from "@/assets/design-anjos.jpg.asset.json";
 import maosVideo from "@/assets/maos-loop-suave.mp4.asset.json";
 import { useState, type CSSProperties } from "react";
 
 // Posição do anel vazio em cada imagem (fração da largura/altura do quadro 16:9).
 export const DESIGNS = [
-  { id: "anjos", name: "Anjos Guardiões", img: anjos.url, x: 0.5, y: 0.49, d: 0.79, accent: "oklch(0.82 0.14 80)" },
+  { id: "anjos", name: "Anjos Guardiões", img: anjosOriginal.url, x: 0.5, y: 0.465, d: 0.64, accent: "oklch(0.82 0.14 80)" },
+  { id: "anjos-nuvens", name: "Anjos nas Nuvens", img: anjos.url, x: 0.5, y: 0.49, d: 0.79, accent: "oklch(0.82 0.14 80)" },
+  { id: "anjos-classicos", name: "Anjos de Luz", img: anjosClassicos.url, x: 0.5, y: 0.49, d: 0.79, accent: "oklch(0.82 0.14 80)" },
   { id: "maos", name: "Mãos de Deus", img: maos.url, x: 0.5, y: 0.44, d: 0.73, accent: "oklch(0.8 0.15 75)" },
   { id: "jesus", name: "Luz do Mundo", img: jesus.url, x: 0.5, y: 0.53, d: 0.53, accent: "oklch(0.75 0.17 55)" },
   { id: "pomba", name: "Espírito Santo", img: pomba.url, x: 0.5, y: 0.555, d: 0.62, accent: "oklch(0.8 0.12 195)" },
@@ -45,7 +50,7 @@ function Gauge({ speed, rpm }: { speed: number; rpm: number }) {
 export function HaloDashboard({ design, speed, rpm, animated }: { design: DesignId; speed: number; rpm: number; animated: boolean }) {
   const [failedVideos, setFailedVideos] = useState<DesignId[]>([]);
   const d = DESIGNS.find((x) => x.id === design) ?? DESIGNS[0];
-  const video = design === "anjos" ? anjosVideo.url : design === "maos" ? maosVideo.url : undefined;
+  const video = design === "anjos" ? anjosOriginalVideo.url : design === "anjos-nuvens" ? anjosVideo.url : design === "maos" ? maosVideo.url : undefined;
   const k = Math.min(speed / MAX, 1);
   const vars = { "--k": k, "--spin": `${Math.max(1.5, 12 - rpm / 700)}s` } as CSSProperties;
   return (
@@ -67,8 +72,8 @@ export function HaloDashboard({ design, speed, rpm, animated }: { design: Design
           />
         )}
         <div className="absolute aspect-square -translate-x-1/2 -translate-y-1/2" style={{ left: `${d.x * 100}%`, top: `${d.y * 100}%`, height: `${d.d * 100}%` }}>
-          {design !== "anjos" && <div className={`absolute -inset-[18%] rounded-full halo-glow ${animated ? "" : "[animation:none]"}`} />}
-          {animated && design !== "anjos" && <div className="absolute -inset-[6%] rounded-full halo-rays" />}
+          {animated && !design.startsWith("anjos") && <div className="absolute -inset-[18%] rounded-full halo-glow" />}
+          {animated && !design.startsWith("anjos") && <div className="absolute -inset-[6%] rounded-full halo-rays" />}
           <div className="absolute inset-[3%]"><Gauge speed={speed} rpm={rpm} /></div>
         </div>
       </div>

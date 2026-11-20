@@ -30,3 +30,5 @@ use the editor.
 <!-- LOVABLE:END -->
 
 - Halo background videos share the image's stage and gauge coordinates, play muted in a loop only while animation is enabled, and retain the still image as a loading/error fallback to preserve dashboard alignment.
+- Keep theme variants in the shared catalog with separate IDs for distinct artwork and static/animated versions so new media never replaces an existing selection.
+- Theme previews use a session-scoped absolute deadline and a saved free fallback; this frontend preview is not a payment entitlement and must not be used as production purchase authorization.
