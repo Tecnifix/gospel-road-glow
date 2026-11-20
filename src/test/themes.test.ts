@@ -2,6 +2,19 @@ import { describe, expect, it } from "vitest";
 import { THEME_CATALOG, readTrial, remainingTrialMs, resolveTheme, startThemeTrial } from "@/lib/themes";
 
 describe("Theme access", () => {
+  it("carries the selected palette independently of the page and animation mode", () => {
+    expect(resolveTheme("free-pomba", null, 0).palette).toBe("teal");
+    expect(resolveTheme("free-classico-anjo", null, 0).palette).toBe("sky");
+    for (const theme of THEME_CATALOG.filter((t) => !t.premium)) {
+      const animated = THEME_CATALOG.find((t) => t.premium && t.design === theme.design && t.background === theme.background);
+      expect(animated?.palette).toBe(theme.palette);
+    }
+  });
+  it("restores the free palette when the Premium preview expires", () => {
+    const trial = startThemeTrial("premium-maos", 1000);
+    expect(resolveTheme("free-pomba", trial, 300999).palette).toBe("gold");
+    expect(resolveTheme("free-pomba", trial, 301000).palette).toBe("teal");
+  });
   it("keeps static versions free and moving versions Premium", () => {
     expect(THEME_CATALOG.filter((t) => !t.premium)).toHaveLength(10);
     for (const theme of THEME_CATALOG.filter((t) => !t.premium)) {

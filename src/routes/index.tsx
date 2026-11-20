@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Home, Gauge, Palette, Sparkles, Play, Pause, SkipBack, SkipForward, Volume2, Droplet, Thermometer, Fuel, Battery, Copy, Check, Bluetooth, Wifi, Radio, Music, HandHeart, Flower2, X, ScanLine } from "lucide-react";
 import jesus from "@/assets/fundo-jesus.jpg.asset.json";
 import anjo from "@/assets/fundo-anjo.jpg.asset.json";
 import cruz from "@/assets/fundo-cruz.jpg.asset.json";
 import { Scanner } from "@/components/Scanner";
-import { DESIGNS, HaloDashboard, type DesignId } from "@/components/HaloDashboard";
+import { HaloDashboard, type DesignId } from "@/components/HaloDashboard";
 import { ThemeGallery } from "@/components/ThemeGallery";
 import { Button } from "@/components/ui/button";
 import { useThemeSelection } from "@/hooks/use-theme-selection";
@@ -32,10 +32,10 @@ export const Route = createFileRoute("/")({
 });
 
 const THEMES = [
-  { id: "jesus", name: "Luz do Mundo", img: jesus.url, accent: "oklch(0.8 0.15 75)" },
-  { id: "anjo", name: "Anjo da Estrada", img: anjo.url, accent: "oklch(0.78 0.12 230)" },
-  { id: "cruz", name: "Monte Calvário", img: cruz.url, accent: "oklch(0.72 0.17 50)" },
-  { id: "pomba", name: "Espírito Santo", img: pomba.url, accent: "oklch(0.8 0.11 190)" },
+  { id: "jesus", name: "Luz do Mundo", img: jesus.url },
+  { id: "anjo", name: "Anjo da Estrada", img: anjo.url },
+  { id: "cruz", name: "Monte Calvário", img: cruz.url },
+  { id: "pomba", name: "Espírito Santo", img: pomba.url },
 ];
 const VERSES = [
   ["Confie no Senhor de todo o seu coração.", "Provérbios 3:5"],
@@ -190,10 +190,8 @@ function App() {
   const toggleRadio = () => { if (isOn()) stopRadio(); else playRadio(radio); };
   const pickRadio = (i: number) => { if (i === radio && isOn()) stopRadio(); else playRadio(i); };
 
-  const baseTheme = THEMES.find((t) => t.id === themeId) ?? THEMES[0]!;
+  const theme = THEMES.find((t) => t.id === themeId) ?? { id: activeTheme.id, name: activeTheme.name, img: activeTheme.img };
   const halo = tab === "home" && design !== "classico" && !worship;
-  const haloDesign = DESIGNS.find((d) => d.id === design);
-  const theme = halo && haloDesign ? { ...baseTheme, accent: haloDesign.accent } : baseTheme;
   const picker = (
     <div className="flex flex-wrap items-center gap-3">
       <Button variant="outline" onClick={() => setTab("temas")}><Palette />Temas</Button>
@@ -204,7 +202,7 @@ function App() {
   const nav = [["home", Home, "Início"], ["cockpit", Gauge, "Cockpit"], ["louvor", Music, "Louvor"], ["scanner", ScanLine, "Scanner"], ["temas", Palette, "Temas"], ["prompts", Sparkles, "Prompts"]] as const;
 
   return (
-    <div className="relative h-screen w-full overflow-hidden" style={{ "--primary": theme.accent, "--border": `color-mix(in oklch, ${theme.accent} 35%, transparent)`, "--accent": `color-mix(in oklch, ${theme.accent} 18%, transparent)` } as CSSProperties}>
+    <div className="adora-theme relative h-screen w-full overflow-hidden bg-background text-foreground" data-theme={activeTheme.palette}>
       {halo ? <HaloDashboard design={design as DesignId} speed={tel.speed} rpm={tel.rpm} animated={animated} /> : <>
       <img key={theme.id} src={theme.img} alt={theme.name} className={`absolute inset-0 h-full w-full object-cover ${animated ? "animate-kenburns" : ""}`} />
       <div className="absolute inset-0 bg-gradient-to-r from-background via-background/40 to-transparent" />

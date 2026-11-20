@@ -3,3 +3,8 @@
 - [x] Separar estáticos gratuitos e animados Premium na seção Temas.
 - [x] Implementar teste de cinco minutos com retorno automático ao tema gratuito.
 - [x] Conferir seleção, reprodução e encerramento do teste.
+
+# Cores entre páginas
+- [x] Vincular a paleta ao tema escolhido, independente da página aberta.
+- [x] Sincronizar destaques, bordas, painéis e brilhos com tokens compartilhados.
+- [x] Conferir navegação e restauração das cores ao encerrar o teste Premium.
