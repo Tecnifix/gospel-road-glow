@@ -3,6 +3,7 @@ import maos from "@/assets/design-maos.jpg.asset.json";
 import jesus from "@/assets/design-jesus.jpg.asset.json";
 import pomba from "@/assets/design-pomba.jpg.asset.json";
 import anjosVideo from "@/assets/anjos-loop-suave.mp4.asset.json";
+import maosVideo from "@/assets/maos-loop-suave.mp4.asset.json";
 import { useState, type CSSProperties } from "react";
 
 // Posição do anel vazio em cada imagem (fração da largura/altura do quadro 16:9).
@@ -42,25 +43,27 @@ function Gauge({ speed, rpm }: { speed: number; rpm: number }) {
 }
 
 export function HaloDashboard({ design, speed, rpm, animated }: { design: DesignId; speed: number; rpm: number; animated: boolean }) {
-  const [videoFailed, setVideoFailed] = useState(false);
+  const [failedVideos, setFailedVideos] = useState<DesignId[]>([]);
   const d = DESIGNS.find((x) => x.id === design) ?? DESIGNS[0];
+  const video = design === "anjos" ? anjosVideo.url : design === "maos" ? maosVideo.url : undefined;
   const k = Math.min(speed / MAX, 1);
   const vars = { "--k": k, "--spin": `${Math.max(1.5, 12 - rpm / 700)}s` } as CSSProperties;
   return (
     <div className="absolute inset-0 overflow-hidden" style={vars}>
       <div className="halo-stage">
         <img src={d.img} alt={d.name} className="absolute inset-0 h-full w-full halo-bg" />
-        {design === "anjos" && animated && !videoFailed && (
+        {video && animated && !failedVideos.includes(design) && (
           <video
-            src={anjosVideo.url}
+            key={design}
+            src={video}
             poster={d.img}
             autoPlay
             loop
             muted
             playsInline
-            aria-label="Anjos Guardiões animados"
+            aria-label={`${d.name} animados`}
             className="absolute inset-0 h-full w-full object-cover halo-bg"
-            onError={() => setVideoFailed(true)}
+            onError={() => setFailedVideos((failed) => [...failed, design])}
           />
         )}
         <div className="absolute aspect-square -translate-x-1/2 -translate-y-1/2" style={{ left: `${d.x * 100}%`, top: `${d.y * 100}%`, height: `${d.d * 100}%` }}>
