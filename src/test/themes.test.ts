@@ -2,6 +2,14 @@ import { describe, expect, it } from "vitest";
 import { THEME_CATALOG, readTrial, remainingTrialMs, resolveTheme, startThemeTrial } from "@/lib/themes";
 
 describe("Theme access", () => {
+  it("assigns a distinct sky to each artwork and shares it with its animated version", () => {
+    const free = THEME_CATALOG.filter((t) => !t.premium);
+    expect(new Set(free.map((t) => t.sky)).size).toBe(10);
+    for (const theme of free) {
+      expect(theme.sky).not.toBe(theme.img);
+      expect(THEME_CATALOG.find((t) => t.premium && t.design === theme.design && t.background === theme.background)?.sky).toBe(theme.sky);
+    }
+  });
   it("carries the selected palette independently of the page and animation mode", () => {
     expect(resolveTheme("free-pomba", null, 0).palette).toBe("teal");
     expect(resolveTheme("free-classico-anjo", null, 0).palette).toBe("sky");

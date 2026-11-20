@@ -33,4 +33,5 @@ use the editor.
 - Keep theme variants in the shared catalog with separate IDs for distinct artwork and static/animated versions so new media never replaces an existing selection.
 - Theme previews use a session-scoped absolute deadline and a saved free fallback; this frontend preview is not a payment entitlement and must not be used as production purchase authorization.
 - Theme palettes belong to the shared catalog and apply through a single app-level data attribute with semantic CSS tokens, never through the current tab, so navigation and preview expiry keep every view synchronized.
-- Secondary views render the active catalog artwork as a still image using the Halo stage for Halo designs; keep video and decorative motion on the home view so navigation preserves the selected artwork without competing with page content.
+- Each catalog artwork has its own sky-only asset shared by its free and animated variants; secondary views and worship use that sky while home retains figures, rings and videos, keeping navigation and trial expiry coordinated.
+- Scanner effects use a fixed-aspect image stage and CSS/SVG overlays driven by the existing scan state, preserving USB and demo diagnostics while keeping the vehicle and pedestal aligned.

@@ -182,6 +182,7 @@ function App() {
   const theme = activeTheme;
   const halo = tab === "home" && design !== "classico" && !worship;
   const motion = animated && tab === "home" && !worship;
+  const skyBackground = tab !== "home" || worship;
   const picker = (
     <div className="flex flex-wrap items-center gap-3">
       <Button variant="outline" onClick={() => setTab("temas")}><Palette />Temas</Button>
@@ -194,8 +195,8 @@ function App() {
   return (
     <div className="adora-theme relative h-screen w-full overflow-hidden bg-background text-foreground" data-theme={activeTheme.palette}>
       {halo ? <HaloDashboard design={design as DesignId} speed={tel.speed} rpm={tel.rpm} animated={animated} /> : <>
-      <div className={design === "classico" ? "absolute inset-0" : "halo-stage"}>
-        <img key={theme.id} src={theme.img} alt={theme.name} className={`absolute inset-0 h-full w-full object-cover ${motion ? "animate-kenburns" : ""}`} />
+      <div className={skyBackground || design === "classico" ? "absolute inset-0" : "halo-stage"}>
+        <img key={skyBackground ? theme.sky : theme.id} src={skyBackground ? theme.sky : theme.img} alt={skyBackground ? `Céu de ${theme.name}` : theme.name} className={`absolute inset-0 h-full w-full object-cover ${motion ? "animate-kenburns" : ""}`} />
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-background via-background/40 to-transparent" />
       </>}

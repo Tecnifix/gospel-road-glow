@@ -3,6 +3,7 @@ import anjo from "@/assets/fundo-anjo.jpg.asset.json";
 import cruz from "@/assets/fundo-cruz.jpg.asset.json";
 import pomba from "@/assets/fundo-pomba.jpg.asset.json";
 import { DESIGNS, type DesignId } from "@/components/HaloDashboard";
+import { CLASSIC_SKIES, DESIGN_SKIES } from "@/lib/theme-skies";
 
 export const TRIAL_DURATION_MS = 5 * 60 * 1000;
 export type ThemePalette = "gold" | "sky" | "amber" | "teal" | "copper";
@@ -18,21 +19,22 @@ export type ThemeOption = {
   id: string;
   name: string;
   img: string;
+  sky: string;
   design: DesignId | "classico";
   background: string;
   premium: boolean;
   palette: ThemePalette;
 };
-const backgrounds: { id: string; name: string; img: string; palette: ThemePalette }[] = [
-  { id: "jesus", name: "Luz do Mundo", img: jesus.url, palette: "gold" },
-  { id: "anjo", name: "Anjo da Estrada", img: anjo.url, palette: "sky" },
-  { id: "cruz", name: "Monte Calvário", img: cruz.url, palette: "amber" },
-  { id: "pomba", name: "Espírito Santo", img: pomba.url, palette: "teal" },
+const backgrounds: { id: string; name: string; img: string; sky: string; palette: ThemePalette }[] = [
+  { id: "jesus", name: "Luz do Mundo", img: jesus.url, sky: CLASSIC_SKIES.jesus, palette: "gold" },
+  { id: "anjo", name: "Anjo da Estrada", img: anjo.url, sky: CLASSIC_SKIES.anjo, palette: "sky" },
+  { id: "cruz", name: "Monte Calvário", img: cruz.url, sky: CLASSIC_SKIES.cruz, palette: "amber" },
+  { id: "pomba", name: "Espírito Santo", img: pomba.url, sky: CLASSIC_SKIES.pomba, palette: "teal" },
 ];
 export const THEME_CATALOG: ThemeOption[] = [
   ...backgrounds.map((t) => ({ ...t, id: `free-classico-${t.id}`, design: "classico" as const, background: t.id, premium: false })),
-  ...DESIGNS.map((d) => ({ id: `free-${d.id}`, name: d.name, img: d.img, design: d.id, background: "jesus", premium: false, palette: designPalettes[d.id] })),
-  ...DESIGNS.map((d) => ({ id: `premium-${d.id}`, name: d.name, img: d.img, design: d.id, background: "jesus", premium: true, palette: designPalettes[d.id] })),
+  ...DESIGNS.map((d) => ({ id: `free-${d.id}`, name: d.name, img: d.img, sky: DESIGN_SKIES[d.id], design: d.id, background: "jesus", premium: false, palette: designPalettes[d.id] })),
+  ...DESIGNS.map((d) => ({ id: `premium-${d.id}`, name: d.name, img: d.img, sky: DESIGN_SKIES[d.id], design: d.id, background: "jesus", premium: true, palette: designPalettes[d.id] })),
   ...backgrounds.map((t) => ({ ...t, id: `premium-classico-${t.id}`, design: "classico" as const, background: t.id, premium: true })),
 ];
 export const DEFAULT_FREE_THEME = "free-anjos-nuvens";
