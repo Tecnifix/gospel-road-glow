@@ -171,13 +171,26 @@ function App() {
   useEffect(() => { localStorage.setItem("adora-design", design); }, [design]);
   useEffect(() => { localStorage.setItem("adora-anim", animated ? "1" : "0"); }, [animated]);
   useEffect(() => { if (audio.current) audio.current.volume = vol / 100; }, [vol]);
+  const playToken = useRef(0);
+  const stopRadio = () => {
+    playToken.current++;
+    const a = audio.current; if (!a) return;
+    a.pause(); a.removeAttribute("src"); a.load();
+    setPlaying(false); setLoading(false);
+  };
   const playRadio = (i: number) => {
     const a = audio.current; if (!a) return;
+    const token = ++playToken.current;
     setRadio(i); setRadioErr(""); setLoading(true);
     a.src = RADIOS[i]!.url; a.volume = vol / 100;
-    a.play().then(() => setPlaying(true)).catch(() => { setPlaying(false); setRadioErr("Rádio indisponível agora. Tente outra."); }).finally(() => setLoading(false));
+    a.play()
+      .then(() => { if (token === playToken.current) setPlaying(true); })
+      .catch(() => { if (token === playToken.current) { setPlaying(false); setRadioErr("Rádio indisponível agora. Tente outra."); } })
+      .finally(() => { if (token === playToken.current) setLoading(false); });
   };
-  const toggleRadio = () => { const a = audio.current; if (!a) return; if (playing) { a.pause(); setPlaying(false); } else playRadio(radio); };
+  const isOn = () => { const a = audio.current; return !!a && (!a.paused || loading); };
+  const toggleRadio = () => { if (isOn()) stopRadio(); else playRadio(radio); };
+  const pickRadio = (i: number) => { if (i === radio && isOn()) stopRadio(); else playRadio(i); };
 
   const baseTheme = THEMES.find((t) => t.id === themeId) ?? THEMES[0]!;
   const halo = tab === "home" && design !== "classico" && !worship;
@@ -261,7 +274,7 @@ function App() {
                 <p className="text-muted-foreground text-sm">{loading ? "Conectando..." : playing ? "Tocando agora" : radioErr || "Pausado"}</p>
                 <div className="flex items-center justify-center gap-6 mt-2">
                   <button aria-label="Anterior" onClick={() => playRadio((radio + RADIOS.length - 1) % RADIOS.length)}><SkipBack size={30} /></button>
-                  <button aria-label={playing ? "Pausar" : "Tocar"} onClick={toggleRadio} className="h-16 w-16 rounded-full ring-2 ring-primary flex items-center justify-center text-primary">{playing ? <Pause size={30} /> : <Play size={30} />}</button>
+                  <button aria-label={playing ? "Pausar" : "Tocar"} onClick={toggleRadio} className="h-16 w-16 rounded-full ring-2 ring-primary flex items-center justify-center text-primary">{playing || loading ? <Pause size={30} /> : <Play size={30} />}</button>
                   <button aria-label="Próxima" onClick={() => playRadio((radio + 1) % RADIOS.length)}><SkipForward size={30} /></button>
                 </div>
                 <div className="flex items-center gap-3 mt-4"><Volume2 size={20} /><input type="range" value={vol} onChange={(e) => setVol(+e.target.value)} className="w-full accent-[var(--primary)]" /><span className="w-8 text-sm">{vol}</span></div>
@@ -290,7 +303,7 @@ function App() {
               <div className="glass rounded-lg p-4">
                 <h2 className="font-display text-primary tracking-widest text-sm mb-3">RÁDIOS GOSPEL</h2>
                 {RADIOS.map((r, i) => (
-                  <button key={r.name} onClick={() => playRadio(i)} className={`w-full flex items-center justify-between rounded-lg px-4 py-3 mb-2 text-left text-lg ${i === radio && playing ? "bg-accent text-primary ring-1 ring-primary" : "hover:bg-accent"}`}>
+                  <button key={r.name} onClick={() => pickRadio(i)} className={`w-full flex items-center justify-between rounded-lg px-4 py-3 mb-2 text-left text-lg ${i === radio && playing ? "bg-accent text-primary ring-1 ring-primary" : "hover:bg-accent"}`}>
                     <span className="flex items-center gap-3"><Radio size={18} />{r.name}</span>{i === radio && playing ? <Pause size={18} /> : <Play size={18} />}
                   </button>
                 ))}
@@ -343,7 +356,7 @@ function App() {
         </section>
       </main>
 
-      <audio ref={audio} preload="none" onError={() => { if (audio.current?.src) { setPlaying(false); setLoading(false); setRadioErr("Rádio indisponível agora. Tente outra."); } }} />
+      <audio ref={audio} preload="none" onError={() => { if (audio.current?.getAttribute("src")) { setPlaying(false); setLoading(false); setRadioErr("Rádio indisponível agora. Tente outra."); } }} />
 
       {worship && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center text-center px-10 bg-background/40">
@@ -352,7 +365,7 @@ function App() {
           <p className="mt-6 max-w-3xl text-4xl italic glow-text">“{VERSES[verse]![0]}”</p>
           <p className="mt-3 text-2xl text-primary">{VERSES[verse]![1]}</p>
           <div className="mt-10 flex items-center gap-6">
-            <button onClick={toggleRadio} className="h-20 w-20 rounded-full ring-2 ring-primary flex items-center justify-center text-primary glass">{playing ? <Pause size={36} /> : <Play size={36} />}</button>
+            <button onClick={toggleRadio} className="h-20 w-20 rounded-full ring-2 ring-primary flex items-center justify-center text-primary glass">{playing || loading ? <Pause size={36} /> : <Play size={36} />}</button>
             <div className="text-left"><p className="text-2xl font-bold">{RADIOS[radio]!.name}</p><p className="text-muted-foreground">{tel.speed} km/h · {now?.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</p></div>
           </div>
         </div>
