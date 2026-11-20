@@ -2,7 +2,7 @@ import anjos from "@/assets/design-anjos.jpg.asset.json";
 import maos from "@/assets/design-maos.jpg.asset.json";
 import jesus from "@/assets/design-jesus.jpg.asset.json";
 import pomba from "@/assets/design-pomba.jpg.asset.json";
-import anjosVideo from "@/assets/anjos-guardioes.mp4.asset.json";
+import anjosVideo from "@/assets/anjos-loop-suave.mp4.asset.json";
 import { useState, type CSSProperties } from "react";
 
 // Posição do anel vazio em cada imagem (fração da largura/altura do quadro 16:9).
