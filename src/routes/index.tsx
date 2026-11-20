@@ -1,15 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Home, Gauge, Palette, Sparkles, Play, Pause, SkipBack, SkipForward, Volume2, Droplet, Thermometer, Fuel, Battery, Copy, Check, Bluetooth, Wifi, Radio, Music, HandHeart, Flower2, X, ScanLine } from "lucide-react";
-import jesus from "@/assets/fundo-jesus.jpg.asset.json";
-import anjo from "@/assets/fundo-anjo.jpg.asset.json";
-import cruz from "@/assets/fundo-cruz.jpg.asset.json";
 import { Scanner } from "@/components/Scanner";
 import { HaloDashboard, type DesignId } from "@/components/HaloDashboard";
 import { ThemeGallery } from "@/components/ThemeGallery";
 import { Button } from "@/components/ui/button";
 import { useThemeSelection } from "@/hooks/use-theme-selection";
-import pomba from "@/assets/fundo-pomba.jpg.asset.json";
 import b1 from "@/assets/bencao-1.mp3.asset.json";
 import b2 from "@/assets/bencao-2.mp3.asset.json";
 import b3 from "@/assets/bencao-3.mp3.asset.json";
@@ -31,12 +27,6 @@ export const Route = createFileRoute("/")({
   component: App,
 });
 
-const THEMES = [
-  { id: "jesus", name: "Luz do Mundo", img: jesus.url },
-  { id: "anjo", name: "Anjo da Estrada", img: anjo.url },
-  { id: "cruz", name: "Monte Calvário", img: cruz.url },
-  { id: "pomba", name: "Espírito Santo", img: pomba.url },
-];
 const VERSES = [
   ["Confie no Senhor de todo o seu coração.", "Provérbios 3:5"],
   ["O Senhor é o meu pastor; nada me faltará.", "Salmos 23:1"],
@@ -144,7 +134,6 @@ function Stat({ icon: Icon, label, value, unit, pct }: { icon: typeof Droplet; l
 function App() {
   const [tab, setTab] = useState<"home" | "cockpit" | "louvor" | "scanner" | "temas" | "prompts">("home");
   const { activeTheme, remaining, choose, stopTrial, notice } = useThemeSelection();
-  const themeId = activeTheme.background;
   const animated = activeTheme.premium;
   const design = activeTheme.design;
   const [now, setNow] = useState<Date | null>(null);
@@ -190,8 +179,9 @@ function App() {
   const toggleRadio = () => { if (isOn()) stopRadio(); else playRadio(radio); };
   const pickRadio = (i: number) => { if (i === radio && isOn()) stopRadio(); else playRadio(i); };
 
-  const theme = THEMES.find((t) => t.id === themeId) ?? { id: activeTheme.id, name: activeTheme.name, img: activeTheme.img };
+  const theme = activeTheme;
   const halo = tab === "home" && design !== "classico" && !worship;
+  const motion = animated && tab === "home" && !worship;
   const picker = (
     <div className="flex flex-wrap items-center gap-3">
       <Button variant="outline" onClick={() => setTab("temas")}><Palette />Temas</Button>
@@ -204,11 +194,13 @@ function App() {
   return (
     <div className="adora-theme relative h-screen w-full overflow-hidden bg-background text-foreground" data-theme={activeTheme.palette}>
       {halo ? <HaloDashboard design={design as DesignId} speed={tel.speed} rpm={tel.rpm} animated={animated} /> : <>
-      <img key={theme.id} src={theme.img} alt={theme.name} className={`absolute inset-0 h-full w-full object-cover ${animated ? "animate-kenburns" : ""}`} />
+      <div className={design === "classico" ? "absolute inset-0" : "halo-stage"}>
+        <img key={theme.id} src={theme.img} alt={theme.name} className={`absolute inset-0 h-full w-full object-cover ${motion ? "animate-kenburns" : ""}`} />
+      </div>
       <div className="absolute inset-0 bg-gradient-to-r from-background via-background/40 to-transparent" />
       </>}
-      {animated && <div className="absolute inset-0 pointer-events-none animate-rays bg-[radial-gradient(circle_at_65%_35%,var(--primary),transparent_45%)] mix-blend-soft-light" />}
-      {animated && particles.map((p, i) => <span key={i} className="particle" style={{ left: `${p.left}%`, animationDuration: `${p.dur}s`, animationDelay: `${p.delay}s` }} />)}
+      {motion && <div className="absolute inset-0 pointer-events-none animate-rays bg-[radial-gradient(circle_at_65%_35%,var(--primary),transparent_45%)] mix-blend-soft-light" />}
+      {motion && particles.map((p, i) => <span key={i} className="particle" style={{ left: `${p.left}%`, animationDuration: `${p.dur}s`, animationDelay: `${p.delay}s` }} />)}
 
       <aside className={`${worship ? "hidden" : ""} absolute left-3 top-3 bottom-3 w-24 glass rounded-lg flex flex-col items-center py-4 gap-2 z-10`}>
         {nav.map(([id, Icon, label]) => (

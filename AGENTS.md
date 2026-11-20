@@ -33,3 +33,4 @@ use the editor.
 - Keep theme variants in the shared catalog with separate IDs for distinct artwork and static/animated versions so new media never replaces an existing selection.
 - Theme previews use a session-scoped absolute deadline and a saved free fallback; this frontend preview is not a payment entitlement and must not be used as production purchase authorization.
 - Theme palettes belong to the shared catalog and apply through a single app-level data attribute with semantic CSS tokens, never through the current tab, so navigation and preview expiry keep every view synchronized.
+- Secondary views render the active catalog artwork as a still image using the Halo stage for Halo designs; keep video and decorative motion on the home view so navigation preserves the selected artwork without competing with page content.
