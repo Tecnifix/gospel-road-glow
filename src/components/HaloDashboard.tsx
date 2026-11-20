@@ -7,7 +7,7 @@ import type { CSSProperties } from "react";
 // Posição do anel vazio em cada imagem (fração da largura/altura do quadro 16:9).
 export const DESIGNS = [
   { id: "anjos", name: "Anjos Guardiões", img: anjos.url, x: 0.5, y: 0.465, d: 0.64, accent: "oklch(0.82 0.14 80)" },
-  { id: "maos", name: "Mãos de Deus", img: maos.url, x: 0.5, y: 0.39, d: 0.56, accent: "oklch(0.8 0.15 75)" },
+  { id: "maos", name: "Mãos de Deus", img: maos.url, x: 0.5, y: 0.44, d: 0.73, accent: "oklch(0.8 0.15 75)" },
   { id: "jesus", name: "Luz do Mundo", img: jesus.url, x: 0.5, y: 0.53, d: 0.53, accent: "oklch(0.75 0.17 55)" },
   { id: "pomba", name: "Espírito Santo", img: pomba.url, x: 0.5, y: 0.555, d: 0.62, accent: "oklch(0.8 0.12 195)" },
 ] as const;
