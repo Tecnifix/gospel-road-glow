@@ -5,6 +5,12 @@ import jesus from "@/assets/fundo-jesus.jpg.asset.json";
 import anjo from "@/assets/fundo-anjo.jpg.asset.json";
 import cruz from "@/assets/fundo-cruz.jpg.asset.json";
 import pomba from "@/assets/fundo-pomba.jpg.asset.json";
+import b1 from "@/assets/bencao-1.mp3.asset.json";
+import b2 from "@/assets/bencao-2.mp3.asset.json";
+import b3 from "@/assets/bencao-3.mp3.asset.json";
+import v1 from "@/assets/versiculo-1.mp3.asset.json";
+import v2 from "@/assets/versiculo-2.mp3.asset.json";
+import welcome from "@/assets/boas-vindas.mp3.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -55,6 +61,16 @@ const PLAYLISTS = [
   ["Deezer · Louvor", "https://www.deezer.com/search/louvor/playlist"],
   ["YouTube Music · Adoração", "https://music.youtube.com/search?q=louvor+e+adora%C3%A7%C3%A3o"],
 ];
+const PRAYER_AUDIO = [b1.url, b2.url, b3.url];
+const VERSE_AUDIO: (string | undefined)[] = [v1.url, v2.url];
+let voice: HTMLAudioElement | null = null;
+function playVoice(url: string | undefined, fallback: string) {
+  if (typeof window === "undefined") return;
+  window.speechSynthesis?.cancel(); voice?.pause();
+  if (url) { voice = new Audio(url); voice.play().catch(() => speak(fallback)); return; }
+  speak(fallback);
+}
+function stopVoice() { voice?.pause(); window.speechSynthesis?.cancel(); }
 function speak(text: string) {
   if (typeof window === "undefined" || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
@@ -192,7 +208,7 @@ function App() {
                   <div className="font-display text-8xl font-extrabold">{now ? now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "--:--"}</div>
                   <div className="text-2xl capitalize">{now?.toLocaleDateString("pt-BR", { weekday: "short", day: "numeric", month: "short" })}</div>
                   <blockquote className="mt-6 max-w-lg text-xl italic">“{VERSES[verse]![0]}”<footer className="text-primary not-italic mt-1">{VERSES[verse]![1]}</footer></blockquote>
-                  <button onClick={() => speak(`${VERSES[verse]![0]} ${VERSES[verse]![1]}`)} className="mt-3 glass rounded-lg px-4 py-2 flex items-center gap-2 text-primary"><Volume2 size={18} />Ouvir versículo</button>
+                  <button onClick={() => playVoice(VERSE_AUDIO[verse], `${VERSES[verse]![0]} ${VERSES[verse]![1]}`)} className="mt-3 glass rounded-lg px-4 py-2 flex items-center gap-2 text-primary"><Volume2 size={18} />Ouvir versículo</button>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
                   <Stat icon={Gauge} label="VELOCIDADE" value={tel.speed} unit="km/h" pct={tel.speed / 2.2} />
@@ -249,7 +265,7 @@ function App() {
                 </div>
                 <div className="glass rounded-lg p-4">
                   <h2 className="font-display text-primary tracking-widest text-sm mb-3">ORAÇÕES DE VIAGEM</h2>
-                  {PRAYERS.map((p) => <button key={p} onClick={() => speak(p)} className="w-full text-left flex gap-3 rounded-lg px-3 py-2 hover:bg-accent text-muted-foreground"><Volume2 size={18} className="shrink-0 text-primary mt-1" />{p}</button>)}
+                  {PRAYERS.map((p, i) => <button key={p} onClick={() => playVoice(PRAYER_AUDIO[i], p)} className="w-full text-left flex gap-3 rounded-lg px-3 py-2 hover:bg-accent text-muted-foreground"><Volume2 size={18} className="shrink-0 text-primary mt-1" />{p}</button>)}
                   <label className="flex items-center gap-3 mt-3 cursor-pointer"><input type="checkbox" defaultChecked={typeof window !== "undefined" && localStorage.getItem("adora-bless") !== "0"} onChange={(e) => localStorage.setItem("adora-bless", e.target.checked ? "1" : "0")} className="accent-[var(--primary)] h-5 w-5" />Mostrar bênção ao ligar</label>
                 </div>
               </div>
@@ -310,8 +326,8 @@ function App() {
             <h2 className="font-display text-2xl mt-3">Bênção da viagem</h2>
             <p className="mt-4 text-xl leading-relaxed">{blessing}</p>
             <div className="mt-6 flex justify-center gap-3">
-              <button onClick={() => speak(blessing)} className="glass rounded-lg px-5 py-3 flex items-center gap-2 text-primary"><Volume2 size={18} />Ouvir oração</button>
-              <button onClick={() => { window.speechSynthesis?.cancel(); setBlessing(null); }} className="rounded-lg px-5 py-3 bg-primary text-primary-foreground font-bold">Amém, vamos!</button>
+              <button onClick={() => playVoice(PRAYER_AUDIO[PRAYERS.indexOf(blessing)], blessing)} className="glass rounded-lg px-5 py-3 flex items-center gap-2 text-primary"><Volume2 size={18} />Ouvir oração</button>
+              <button onClick={() => { stopVoice(); setBlessing(null); playVoice(welcome.url, "Bem-vindo ao AdoraDrive. Que Deus guie, cuide e abençoe o seu caminho hoje."); }} className="rounded-lg px-5 py-3 bg-primary text-primary-foreground font-bold">Amém, vamos!</button>
             </div>
           </div>
         </div>
