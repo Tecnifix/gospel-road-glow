@@ -16,6 +16,7 @@
   --color-border: var(--border);
   --color-accent: var(--accent);
   --color-destructive: var(--destructive);
+  --color-chart-4: var(--warning);
 }
 :root {
   --radius: 1rem;
@@ -28,6 +29,7 @@
   --border: oklch(0.8 0.15 75 / 35%);
   --accent: oklch(0.8 0.15 75 / 18%);
   --destructive: oklch(0.65 0.22 27);
+  --warning: oklch(0.82 0.16 85);
 }
 @layer base {
   * { border-color: var(--color-border); }
@@ -41,3 +43,7 @@
 .animate-rays { animation: rays 6s ease-in-out infinite; }
 @keyframes floaty { 0% { transform: translateY(0); opacity: 0 } 20% {opacity:1} 100% { transform: translateY(-110vh); opacity: 0 } }
 .particle { position:absolute; bottom:-10px; width:4px; height:4px; border-radius:9999px; background: var(--primary); box-shadow: 0 0 8px var(--primary); animation: floaty linear infinite; }
+@keyframes sweep { 0% { left: 18% } 50% { left: 72% } 100% { left: 18% } }
+.scan-beam { background: linear-gradient(90deg, transparent, color-mix(in oklch, var(--primary) 70%, transparent), transparent); box-shadow: 0 0 40px var(--primary); mix-blend-mode: screen; animation: sweep 2.4s ease-in-out infinite; }
+@keyframes gridpulse { 0%,100% { opacity: .15 } 50% { opacity: .45 } }
+.scan-grid { background-image: linear-gradient(var(--primary) 1px, transparent 1px), linear-gradient(90deg, var(--primary) 1px, transparent 1px); background-size: 22px 22px; mask-image: radial-gradient(ellipse, black 40%, transparent 75%); mix-blend-mode: screen; animation: gridpulse 1.6s ease-in-out infinite; }

@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
-import { Home, Gauge, Palette, Sparkles, Play, Pause, SkipBack, SkipForward, Volume2, Droplet, Thermometer, Fuel, Battery, Copy, Check, Bluetooth, Wifi, Radio, Music, HandHeart, Flower2, X } from "lucide-react";
+import { Home, Gauge, Palette, Sparkles, Play, Pause, SkipBack, SkipForward, Volume2, Droplet, Thermometer, Fuel, Battery, Copy, Check, Bluetooth, Wifi, Radio, Music, HandHeart, Flower2, X, ScanLine } from "lucide-react";
 import jesus from "@/assets/fundo-jesus.jpg.asset.json";
 import anjo from "@/assets/fundo-anjo.jpg.asset.json";
 import cruz from "@/assets/fundo-cruz.jpg.asset.json";
+import { Scanner } from "@/components/Scanner";
 import pomba from "@/assets/fundo-pomba.jpg.asset.json";
 import b1 from "@/assets/bencao-1.mp3.asset.json";
 import b2 from "@/assets/bencao-2.mp3.asset.json";
@@ -137,7 +138,7 @@ function Stat({ icon: Icon, label, value, unit, pct }: { icon: typeof Droplet; l
 }
 
 function App() {
-  const [tab, setTab] = useState<"home" | "cockpit" | "louvor" | "temas" | "prompts">("home");
+  const [tab, setTab] = useState<"home" | "cockpit" | "louvor" | "scanner" | "temas" | "prompts">("home");
   const [themeId, setThemeId] = useState("jesus");
   const [animated, setAnimated] = useState(true);
   const [now, setNow] = useState<Date | null>(null);
@@ -176,7 +177,7 @@ function App() {
 
   const theme = THEMES.find((t) => t.id === themeId) ?? THEMES[0]!;
   const particles = useMemo(() => Array.from({ length: 24 }, (_, i) => ({ left: (i * 37) % 100, dur: 8 + (i % 7) * 2, delay: (i % 9) * 1.3 })), []);
-  const nav = [["home", Home, "Início"], ["cockpit", Gauge, "Cockpit"], ["louvor", Music, "Louvor"], ["temas", Palette, "Temas"], ["prompts", Sparkles, "Prompts"]] as const;
+  const nav = [["home", Home, "Início"], ["cockpit", Gauge, "Cockpit"], ["louvor", Music, "Louvor"], ["scanner", ScanLine, "Scanner"], ["temas", Palette, "Temas"], ["prompts", Sparkles, "Prompts"]] as const;
 
   return (
     <div className="relative h-screen w-full overflow-hidden" style={{ "--primary": theme.accent, "--border": `color-mix(in oklch, ${theme.accent} 35%, transparent)`, "--accent": `color-mix(in oklch, ${theme.accent} 18%, transparent)` } as CSSProperties}>
@@ -245,6 +246,8 @@ function App() {
               </div>
             </div>
           )}
+
+          {tab === "scanner" && <Scanner />}
 
           {tab === "louvor" && (
             <div className="grid md:grid-cols-2 gap-4">
