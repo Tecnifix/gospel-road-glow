@@ -2,7 +2,7 @@ import anjos from "@/assets/anjos-nuvens.jpg.asset.json";
 import maos from "@/assets/design-maos.jpg.asset.json";
 import jesus from "@/assets/design-jesus.jpg.asset.json";
 import pomba from "@/assets/design-pomba.jpg.asset.json";
-import anjosVideo from "@/assets/anjos-nuvens.mp4.asset.json";
+import anjosVideo from "@/assets/anjos-nuvens-continuo.mp4.asset.json";
 import maosVideo from "@/assets/maos-loop-suave.mp4.asset.json";
 import { useState, type CSSProperties } from "react";
 
