@@ -47,3 +47,9 @@
 .scan-beam { background: linear-gradient(90deg, transparent, color-mix(in oklch, var(--primary) 70%, transparent), transparent); box-shadow: 0 0 40px var(--primary); mix-blend-mode: screen; animation: sweep 2.4s ease-in-out infinite; }
 @keyframes gridpulse { 0%,100% { opacity: .15 } 50% { opacity: .45 } }
 .scan-grid { background-image: linear-gradient(var(--primary) 1px, transparent 1px), linear-gradient(90deg, var(--primary) 1px, transparent 1px); background-size: 22px 22px; mask-image: radial-gradient(ellipse, black 40%, transparent 75%); mix-blend-mode: screen; animation: gridpulse 1.6s ease-in-out infinite; }
+/* Quadro 16:9 que cobre a tela, para o velocímetro casar com o anel da imagem */
+.halo-stage { position: absolute; left: 50%; top: 50%; width: max(100vw, 177.78vh); height: max(100vh, 56.25vw); transform: translate(-50%, -50%); }
+.halo-bg { filter: brightness(calc(0.75 + var(--k) * 0.45)) saturate(calc(1 + var(--k) * 0.4)); transition: filter .6s; }
+.halo-glow { background: radial-gradient(circle, transparent 52%, color-mix(in oklch, var(--primary) calc(25% + var(--k) * 55%), transparent) 62%, transparent 72%); transform: scale(calc(0.95 + var(--k) * 0.12)); transition: transform .6s, background .6s; animation: rays 3s ease-in-out infinite; mix-blend-mode: screen; }
+@keyframes spin { to { transform: rotate(360deg) } }
+.halo-rays { background: repeating-conic-gradient(from 0deg, color-mix(in oklch, var(--primary) 45%, transparent) 0deg 2deg, transparent 2deg 15deg); mask-image: radial-gradient(circle, transparent 62%, black 66%, transparent 74%); animation: spin var(--spin) linear infinite; opacity: calc(0.3 + var(--k) * 0.7); mix-blend-mode: screen; }

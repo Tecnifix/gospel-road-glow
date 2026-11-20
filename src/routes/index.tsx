@@ -5,6 +5,7 @@ import jesus from "@/assets/fundo-jesus.jpg.asset.json";
 import anjo from "@/assets/fundo-anjo.jpg.asset.json";
 import cruz from "@/assets/fundo-cruz.jpg.asset.json";
 import { Scanner } from "@/components/Scanner";
+import { DESIGNS, HaloDashboard, type DesignId } from "@/components/HaloDashboard";
 import pomba from "@/assets/fundo-pomba.jpg.asset.json";
 import b1 from "@/assets/bencao-1.mp3.asset.json";
 import b2 from "@/assets/bencao-2.mp3.asset.json";
@@ -141,6 +142,7 @@ function App() {
   const [tab, setTab] = useState<"home" | "cockpit" | "louvor" | "scanner" | "temas" | "prompts">("home");
   const [themeId, setThemeId] = useState("jesus");
   const [animated, setAnimated] = useState(true);
+  const [design, setDesign] = useState<DesignId | "classico">("anjos");
   const [now, setNow] = useState<Date | null>(null);
   const [verse, setVerse] = useState(0);
   const [radio, setRadio] = useState(0);
@@ -156,6 +158,7 @@ function App() {
 
   useEffect(() => {
     const s = localStorage.getItem("adora-theme"); if (s) setThemeId(s);
+    const ds = localStorage.getItem("adora-design"); if (ds) setDesign(ds as DesignId | "classico");
     const a = localStorage.getItem("adora-anim"); if (a) setAnimated(a === "1");
     setNow(new Date());
     const id = setInterval(() => setNow(new Date()), 1000);
@@ -165,6 +168,7 @@ function App() {
     return () => { clearInterval(id); clearInterval(v); };
   }, []);
   useEffect(() => { localStorage.setItem("adora-theme", themeId); }, [themeId]);
+  useEffect(() => { localStorage.setItem("adora-design", design); }, [design]);
   useEffect(() => { localStorage.setItem("adora-anim", animated ? "1" : "0"); }, [animated]);
   useEffect(() => { if (audio.current) audio.current.volume = vol / 100; }, [vol]);
   const playRadio = (i: number) => {
@@ -175,14 +179,26 @@ function App() {
   };
   const toggleRadio = () => { const a = audio.current; if (!a) return; if (playing) { a.pause(); setPlaying(false); } else playRadio(radio); };
 
-  const theme = THEMES.find((t) => t.id === themeId) ?? THEMES[0]!;
+  const baseTheme = THEMES.find((t) => t.id === themeId) ?? THEMES[0]!;
+  const halo = tab === "home" && design !== "classico" && !worship;
+  const haloDesign = DESIGNS.find((d) => d.id === design);
+  const theme = halo && haloDesign ? { ...baseTheme, accent: haloDesign.accent } : baseTheme;
+  const picker = (
+    <div className="flex flex-wrap gap-2">
+      {([["classico", "Clássico"], ...DESIGNS.map((d) => [d.id, d.name])] as [string, string][]).map(([id, name]) => (
+        <button key={id} onClick={() => setDesign(id as DesignId | "classico")} className={`glass rounded-full px-4 py-1.5 text-sm ${design === id ? "ring-1 ring-primary text-primary" : "text-muted-foreground"}`}>{name}</button>
+      ))}
+    </div>
+  );
   const particles = useMemo(() => Array.from({ length: 24 }, (_, i) => ({ left: (i * 37) % 100, dur: 8 + (i % 7) * 2, delay: (i % 9) * 1.3 })), []);
   const nav = [["home", Home, "Início"], ["cockpit", Gauge, "Cockpit"], ["louvor", Music, "Louvor"], ["scanner", ScanLine, "Scanner"], ["temas", Palette, "Temas"], ["prompts", Sparkles, "Prompts"]] as const;
 
   return (
     <div className="relative h-screen w-full overflow-hidden" style={{ "--primary": theme.accent, "--border": `color-mix(in oklch, ${theme.accent} 35%, transparent)`, "--accent": `color-mix(in oklch, ${theme.accent} 18%, transparent)` } as CSSProperties}>
+      {halo ? <HaloDashboard design={design as DesignId} speed={tel.speed} rpm={tel.rpm} animated={animated} /> : <>
       <img key={theme.id} src={theme.img} alt={theme.name} className={`absolute inset-0 h-full w-full object-cover ${animated ? "animate-kenburns" : ""}`} />
       <div className="absolute inset-0 bg-gradient-to-r from-background via-background/40 to-transparent" />
+      </>}
       {animated && <div className="absolute inset-0 pointer-events-none animate-rays bg-[radial-gradient(circle_at_65%_35%,var(--primary),transparent_45%)] mix-blend-soft-light" />}
       {animated && particles.map((p, i) => <span key={i} className="particle" style={{ left: `${p.left}%`, animationDuration: `${p.dur}s`, animationDelay: `${p.delay}s` }} />)}
 
@@ -202,7 +218,27 @@ function App() {
         </header>
 
         <section className="flex-1 min-h-0 mt-4 overflow-auto">
-          {tab === "home" && (
+          {halo && (
+            <div className="h-full flex flex-col justify-between pointer-events-none">
+              <div className="pointer-events-auto">{picker}</div>
+              <div className="flex items-end justify-between gap-4">
+                <div className="grid grid-cols-2 gap-3 w-[300px] pointer-events-auto">
+                  <Stat icon={Thermometer} label="MOTOR" value={tel.engine} unit="°C" pct={tel.engine / 1.3} />
+                  <Stat icon={Droplet} label="ÓLEO" value={tel.oil} unit="°C" pct={tel.oil / 1.4} />
+                </div>
+                <div className="glass rounded-lg px-4 py-2 max-w-sm text-center pointer-events-auto">
+                  <p className="italic">“{VERSES[verse]![0]}”</p><p className="text-primary text-sm">{VERSES[verse]![1]}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-3 w-[300px] pointer-events-auto">
+                  <Stat icon={Fuel} label="COMBUSTÍVEL" value={tel.fuel.toFixed(0)} unit="%" pct={tel.fuel} />
+                  <Stat icon={Battery} label="BATERIA" value={tel.battery} unit="V" pct={(tel.battery - 11) * 25} />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {tab === "home" && !halo && <div className="mb-3">{picker}</div>}
+          {tab === "home" && !halo && (
             <div className="grid lg:grid-cols-[1fr_360px] gap-4 h-full">
               <div className="flex flex-col justify-between">
                 <div>
