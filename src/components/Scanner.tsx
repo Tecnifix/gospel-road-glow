@@ -49,7 +49,7 @@ export function Scanner() {
       <div className="min-w-0 flex flex-col justify-center">
       <div className="relative aspect-video overflow-hidden" data-scan-state={state}>
         <ScannerVehicle />
-        <div className="absolute top-4 left-4 right-4 flex items-center justify-between gap-2 text-sm">
+        <div className="absolute top-2 left-2 right-2 sm:top-4 sm:left-4 sm:right-4 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-sm">
           <span className="flex items-center gap-2 rounded-md bg-background/80 px-3 py-2 text-primary"><ScanLine size={16} /><span className="hidden sm:inline">{scanning ? "DIAGNÓSTICO EM CURSO" : state === "done" ? "DIAGNÓSTICO CONCLUÍDO" : "SCANNER DO VEÍCULO"}</span></span>
           <span className="rounded-md bg-background/80 px-3 py-2 font-display">{pct}%</span>
         </div>
@@ -59,7 +59,7 @@ export function Scanner() {
           {state === "idle" && <p className="text-lg text-muted-foreground">Veículo pronto para diagnóstico</p>}
           {scanning && (
             <div>
-              <div className="flex justify-between text-lg"><span className="flex items-center gap-2"><Sparkles size={18} className="text-primary" />{STEPS[Math.min(step, STEPS.length - 1)]}...</span><span className="font-display text-primary">{pct}%</span></div>
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-base sm:text-lg"><span className="min-w-0 flex items-center gap-2"><Sparkles size={18} className="shrink-0 text-primary" />{STEPS[Math.min(step, STEPS.length - 1)]}...</span><span className="font-display text-primary">{pct}%</span></div>
               <div className="mt-2 h-2 rounded-full bg-accent overflow-hidden"><div className="h-full bg-primary transition-all duration-700" style={{ width: `${pct}%` }} /></div>
             </div>
           )}
@@ -88,8 +88,8 @@ export function Scanner() {
           <div className="glass rounded-lg p-4">
             <p className="text-xs font-display tracking-widest text-primary mb-2">RESULTADO {mode === "demo" ? "· DEMONSTRAÇÃO" : "· USB"}</p>
             {items.map((it) => { const I = Icon[it.status]; return (
-              <div key={it.key} className="flex items-center justify-between py-2 border-b last:border-0">
-                <span className="flex items-center gap-2"><I size={18} className={color[it.status]} />{it.label}</span><span className="font-bold">{it.value}</span>
+              <div key={it.key} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 py-2 border-b last:border-0">
+                <span className="min-w-0 flex items-center gap-2"><I size={18} className={`shrink-0 ${color[it.status]}`} />{it.label}</span><span className="font-bold">{it.value}</span>
               </div>
             ); })}
           </div>

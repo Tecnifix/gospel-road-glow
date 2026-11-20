@@ -66,6 +66,14 @@
 .scan-grid { background-image: linear-gradient(var(--primary) 1px, transparent 1px), linear-gradient(90deg, var(--primary) 1px, transparent 1px); background-size: 22px 22px; mask-image: radial-gradient(ellipse, black 40%, transparent 75%); mix-blend-mode: screen; animation: gridpulse 1.6s ease-in-out infinite; }
 /* Quadro 16:9 que cobre a tela, para o velocímetro casar com o anel da imagem */
 .halo-stage { position: absolute; left: 50%; top: 50%; width: max(100vw, 177.78vh); height: max(100vh, 56.25vw); transform: translate(-50%, -50%); }
+.halo-stage-contained { width: 100%; height: 100%; }
+.adora-theme { height: 100dvh; }
+.app-nav { padding-bottom: max(.5rem, env(safe-area-inset-bottom)); }
+@media (min-width: 1024px) { .app-nav { padding-bottom: 1rem; } }
+@media (max-width: 1023px) {
+  .app-main { bottom: calc(76px + env(safe-area-inset-bottom)); top: max(.75rem, env(safe-area-inset-top)); }
+  .app-content { overscroll-behavior-y: contain; scrollbar-width: thin; }
+}
 .halo-bg { filter: brightness(calc(0.75 + var(--k) * 0.45)) saturate(calc(1 + var(--k) * 0.4)); transition: filter .6s; }
 .halo-glow { background: radial-gradient(circle, transparent 52%, color-mix(in oklch, var(--primary) calc(25% + var(--k) * 55%), transparent) 62%, transparent 72%); transform: scale(calc(0.95 + var(--k) * 0.12)); transition: transform .6s, background .6s; animation: rays 3s ease-in-out infinite; mix-blend-mode: screen; }
 @keyframes spin { to { transform: rotate(360deg) } }

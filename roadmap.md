@@ -18,3 +18,8 @@
 - [x] Substituir montanha e pedestal por uma carroceria transparente e genérica sobre o fundo do tema.
 - [x] Preservar varredura luminosa, leitura USB e demonstração.
 - [x] Conferir apresentação e demonstração completa; leitura física depende do adaptador USB.
+
+# Versão celular
+- [x] Adaptar navegação, painel e demais telas sem cortes ou sobreposição.
+- [x] Mostrar a arte completa e permitir ampliar os temas antes de escolher.
+- [x] Conferir seleção gratuita, teste Premium e Scanner no celular e preservar a central horizontal.

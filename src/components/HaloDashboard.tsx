@@ -47,7 +47,7 @@ function Gauge({ speed, rpm }: { speed: number; rpm: number }) {
   );
 }
 
-export function HaloDashboard({ design, speed, rpm, animated }: { design: DesignId; speed: number; rpm: number; animated: boolean }) {
+export function HaloDashboard({ design, speed, rpm, animated, contained = false }: { design: DesignId; speed: number; rpm: number; animated: boolean; contained?: boolean }) {
   const [failedVideos, setFailedVideos] = useState<DesignId[]>([]);
   const d = DESIGNS.find((x) => x.id === design) ?? DESIGNS[0];
   const video = design === "anjos" ? anjosOriginalVideo.url : design === "anjos-nuvens" ? anjosVideo.url : design === "maos" ? maosVideo.url : undefined;
@@ -55,7 +55,7 @@ export function HaloDashboard({ design, speed, rpm, animated }: { design: Design
   const vars = { "--k": k, "--spin": `${Math.max(1.5, 12 - rpm / 700)}s` } as CSSProperties;
   return (
     <div className="absolute inset-0 overflow-hidden" style={vars}>
-      <div className="halo-stage">
+      <div className={contained ? "halo-stage halo-stage-contained" : "halo-stage"}>
         <img src={d.img} alt={d.name} className="absolute inset-0 h-full w-full halo-bg" />
         {video && animated && !failedVideos.includes(design) && (
           <video
