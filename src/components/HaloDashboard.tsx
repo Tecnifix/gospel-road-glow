@@ -1,14 +1,14 @@
-import anjos from "@/assets/design-anjos.jpg.asset.json";
+import anjos from "@/assets/anjos-nuvens.jpg.asset.json";
 import maos from "@/assets/design-maos.jpg.asset.json";
 import jesus from "@/assets/design-jesus.jpg.asset.json";
 import pomba from "@/assets/design-pomba.jpg.asset.json";
-import anjosVideo from "@/assets/anjos-loop-suave.mp4.asset.json";
+import anjosVideo from "@/assets/anjos-nuvens.mp4.asset.json";
 import maosVideo from "@/assets/maos-loop-suave.mp4.asset.json";
 import { useState, type CSSProperties } from "react";
 
 // Posição do anel vazio em cada imagem (fração da largura/altura do quadro 16:9).
 export const DESIGNS = [
-  { id: "anjos", name: "Anjos Guardiões", img: anjos.url, x: 0.5, y: 0.465, d: 0.64, accent: "oklch(0.82 0.14 80)" },
+  { id: "anjos", name: "Anjos Guardiões", img: anjos.url, x: 0.5, y: 0.49, d: 0.79, accent: "oklch(0.82 0.14 80)" },
   { id: "maos", name: "Mãos de Deus", img: maos.url, x: 0.5, y: 0.44, d: 0.73, accent: "oklch(0.8 0.15 75)" },
   { id: "jesus", name: "Luz do Mundo", img: jesus.url, x: 0.5, y: 0.53, d: 0.53, accent: "oklch(0.75 0.17 55)" },
   { id: "pomba", name: "Espírito Santo", img: pomba.url, x: 0.5, y: 0.555, d: 0.62, accent: "oklch(0.8 0.12 195)" },
@@ -67,8 +67,8 @@ export function HaloDashboard({ design, speed, rpm, animated }: { design: Design
           />
         )}
         <div className="absolute aspect-square -translate-x-1/2 -translate-y-1/2" style={{ left: `${d.x * 100}%`, top: `${d.y * 100}%`, height: `${d.d * 100}%` }}>
-          <div className={`absolute -inset-[18%] rounded-full halo-glow ${animated ? "" : "[animation:none]"}`} />
-          {animated && <div className="absolute -inset-[6%] rounded-full halo-rays" />}
+          {design !== "anjos" && <div className={`absolute -inset-[18%] rounded-full halo-glow ${animated ? "" : "[animation:none]"}`} />}
+          {animated && design !== "anjos" && <div className="absolute -inset-[6%] rounded-full halo-rays" />}
           <div className="absolute inset-[3%]"><Gauge speed={speed} rpm={rpm} /></div>
         </div>
       </div>
