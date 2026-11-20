@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { ScanLine, Usb, CheckCircle2, AlertTriangle, XCircle, Sparkles, Circle, LoaderCircle } from "lucide-react";
-import scanImg from "@/assets/scanner-monte.png.asset.json";
+import { ScannerVehicle } from "@/components/ScannerVehicle";
 import { Button } from "@/components/ui/button";
 import { Elm327, demoScan, hasUsbSerial, realScan, type ScanItem } from "@/lib/obd";
 
@@ -47,22 +47,12 @@ export function Scanner() {
   return (
     <div className="grid lg:grid-cols-[minmax(0,1fr)_300px] gap-5 min-h-full">
       <div className="min-w-0 flex flex-col justify-center">
-      <div className="relative aspect-video overflow-hidden rounded-lg bg-background" data-scan-state={state}>
-        <img src={scanImg.url} alt="Carro sobre um pedestal no pico de um monte" className="absolute inset-0 h-full w-full object-cover" />
+      <div className="relative aspect-video overflow-hidden" data-scan-state={state}>
+        <ScannerVehicle />
         <div className="absolute top-4 left-4 right-4 flex items-center justify-between gap-2 text-sm">
           <span className="flex items-center gap-2 rounded-md bg-background/80 px-3 py-2 text-primary"><ScanLine size={16} /><span className="hidden sm:inline">{scanning ? "DIAGNÓSTICO EM CURSO" : state === "done" ? "DIAGNÓSTICO CONCLUÍDO" : "SCANNER DO VEÍCULO"}</span></span>
           <span className="rounded-md bg-background/80 px-3 py-2 font-display">{pct}%</span>
         </div>
-        {scanning && (
-          <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-            <div className="summit-scan-plane" />
-            <svg viewBox="0 0 1000 563" className="absolute inset-0 h-full w-full text-primary" fill="none" stroke="currentColor">
-              <g className="summit-scan-rings"><ellipse cx="500" cy="340" rx="288" ry="43" strokeWidth="2" /><ellipse cx="500" cy="340" rx="258" ry="34" strokeWidth="1" strokeDasharray="12 8" /></g>
-              <g className="summit-scan-contour" strokeWidth="1.5"><path d="M280 325V260Q285 245 312 242L380 198Q400 183 454 180H552Q588 185 604 216L641 246V320" /><path d="M290 252H635M340 223H612M395 194H569" strokeDasharray="6 7" /></g>
-              <g className="summit-scan-nodes"><circle cx="336" cy="277" r="5" /><circle cx="445" cy="312" r="5" /><circle cx="624" cy="300" r="5" /><path d="M336 277L300 235H240M445 312L460 365H520M624 300L675 260H750" strokeWidth="1" /></g>
-            </svg>
-          </div>
-        )}
         {state === "done" && <div className="absolute bottom-4 right-4 rounded-full border border-primary bg-background/80 p-3 text-primary"><CheckCircle2 size={28} /></div>}
       </div>
         <div className="py-4" role="status" aria-live="polite">

@@ -70,14 +70,14 @@
 .halo-glow { background: radial-gradient(circle, transparent 52%, color-mix(in oklch, var(--primary) calc(25% + var(--k) * 55%), transparent) 62%, transparent 72%); transform: scale(calc(0.95 + var(--k) * 0.12)); transition: transform .6s, background .6s; animation: rays 3s ease-in-out infinite; mix-blend-mode: screen; }
 @keyframes spin { to { transform: rotate(360deg) } }
 .halo-rays { background: repeating-conic-gradient(from 0deg, color-mix(in oklch, var(--primary) 45%, transparent) 0deg 2deg, transparent 2deg 15deg); mask-image: radial-gradient(circle, transparent 62%, black 66%, transparent 74%); animation: spin var(--spin) linear infinite; opacity: calc(0.3 + var(--k) * 0.7); mix-blend-mode: screen; }
-.summit-scan-plane { position: absolute; left: 25%; width: 44%; top: 28%; height: 5%; border-bottom: 2px solid var(--primary); background: linear-gradient(transparent, var(--accent)); box-shadow: 0 5px 20px var(--glass-shadow); mix-blend-mode: screen; animation: summit-slice 2.8s ease-in-out infinite; }
-.summit-scan-rings { transform-origin: 500px 340px; animation: summit-ring 2.8s ease-out infinite; filter: drop-shadow(0 0 5px var(--primary)); }
-.summit-scan-contour { animation: summit-trace 2.8s ease-in-out infinite; filter: drop-shadow(0 0 3px var(--primary)); }
-.summit-scan-nodes { animation: summit-nodes 1.6s ease-in-out infinite; }
-@keyframes summit-slice { 0% { top: 28%; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { top: 63%; opacity: 0; } }
-@keyframes summit-ring { 0% { transform: scale(.8); opacity: .2; } 50% { opacity: .9; } 100% { transform: scale(1.08); opacity: 0; } }
-@keyframes summit-trace { 0%,100% { opacity: .1; } 40%,65% { opacity: .7; } }
-@keyframes summit-nodes { 0%,100% { opacity: .3; } 50% { opacity: 1; } }
+.scanner-vehicle { filter: drop-shadow(0 0 6px var(--glass-shadow)); }
+.scanner-glass-light { stop-color: var(--primary); stop-opacity: .16; }
+.scanner-glass-clear { stop-color: var(--primary); stop-opacity: .025; }
+.scanner-body-sweep, .scanner-body-nodes { display: none; }
+[data-scan-state="scanning"] .scanner-body-sweep { display: block; animation: scanner-body-slice 2.8s linear infinite; }
+[data-scan-state="scanning"] .scanner-body-nodes { display: block; animation: scanner-body-pulse 1.6s ease-in-out infinite; }
+@keyframes scanner-body-slice { 0% { transform: translateY(0); opacity: 0; } 15%,85% { opacity: 1; } 100% { transform: translateY(210px); opacity: 0; } }
+@keyframes scanner-body-pulse { 0%,100% { opacity: .3; } 50% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
-  .summit-scan-plane, .summit-scan-rings, .summit-scan-contour, .summit-scan-nodes { animation: none; opacity: .6; }
+  [data-scan-state="scanning"] .scanner-body-sweep, [data-scan-state="scanning"] .scanner-body-nodes { animation: none; opacity: .6; }
 }

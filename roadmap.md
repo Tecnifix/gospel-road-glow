@@ -14,7 +14,7 @@
 - [x] Criar um céu estático diferente para cada arte de tema, baseado no respectivo fundo, sem figuras ou círculo preto.
 - [x] Preservar os temas do Início e conferir a navegação e restauração de cada céu correspondente.
 
-# Scanner no monte
-- [x] Criar a cena do carro sobre um pedestal no pico de um monte.
-- [x] Implementar uma varredura luminosa com animação e preservar leitura USB e demonstração.
-- [x] Conferir o scan completo em demonstração, resultados e apresentação na tela do carro; leitura física depende do adaptador USB.
+# Scanner transparente
+- [x] Substituir montanha e pedestal por uma carroceria transparente e genérica sobre o fundo do tema.
+- [x] Preservar varredura luminosa, leitura USB e demonstração.
+- [x] Conferir apresentação e demonstração completa; leitura física depende do adaptador USB.
