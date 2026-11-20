@@ -169,7 +169,7 @@ function App() {
       {animated && <div className="absolute inset-0 pointer-events-none animate-rays bg-[radial-gradient(circle_at_65%_35%,var(--primary),transparent_45%)] mix-blend-soft-light" />}
       {animated && particles.map((p, i) => <span key={i} className="particle" style={{ left: `${p.left}%`, animationDuration: `${p.dur}s`, animationDelay: `${p.delay}s` }} />)}
 
-      <aside className="absolute left-3 top-3 bottom-3 w-24 glass rounded-lg flex flex-col items-center py-4 gap-2 z-10">
+      <aside className={`${worship ? "hidden" : ""} absolute left-3 top-3 bottom-3 w-24 glass rounded-lg flex flex-col items-center py-4 gap-2 z-10`}>
         {nav.map(([id, Icon, label]) => (
           <button key={id} onClick={() => setTab(id)} className={`w-20 py-3 rounded-lg flex flex-col items-center gap-1 text-sm transition ${tab === id ? "bg-accent text-primary ring-1 ring-primary" : "text-muted-foreground hover:text-foreground"}`}>
             <Icon size={26} />{label}
@@ -177,7 +177,7 @@ function App() {
         ))}
       </aside>
 
-      <main className="absolute left-32 right-4 top-3 bottom-3 z-10 flex flex-col">
+      <main className={`${worship ? "hidden" : ""} absolute left-32 right-4 top-3 bottom-3 z-10 flex flex-col`}>
         <header className="flex items-center justify-between">
           <div><h1 className="font-display text-3xl font-extrabold">Adora<span className="text-primary">Drive</span></h1><p className="text-xs tracking-[0.3em] text-muted-foreground">FÉ EM CADA TRAJETO</p></div>
           <p className="hidden md:block font-script text-3xl text-foreground/90">Deus guia, cuida e abençoa!</p>
