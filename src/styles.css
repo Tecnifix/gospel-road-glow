@@ -76,7 +76,7 @@
 .scanner-body-sweep, .scanner-body-nodes { display: none; }
 [data-scan-state="scanning"] .scanner-body-sweep { display: block; animation: scanner-body-slice 2.8s linear infinite; }
 [data-scan-state="scanning"] .scanner-body-nodes { display: block; animation: scanner-body-pulse 1.6s ease-in-out infinite; }
-@keyframes scanner-body-slice { 0% { transform: translateY(0); opacity: 0; } 15%,85% { opacity: 1; } 100% { transform: translateY(210px); opacity: 0; } }
+@keyframes scanner-body-slice { 0% { transform: translateY(0); opacity: 0; } 15%,85% { opacity: 1; } 100% { transform: translateY(460px); opacity: 0; } }
 @keyframes scanner-body-pulse { 0%,100% { opacity: .3; } 50% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
   [data-scan-state="scanning"] .scanner-body-sweep, [data-scan-state="scanning"] .scanner-body-nodes { animation: none; opacity: .6; }

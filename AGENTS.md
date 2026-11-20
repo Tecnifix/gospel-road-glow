@@ -34,4 +34,4 @@ use the editor.
 - Theme previews use a session-scoped absolute deadline and a saved free fallback; this frontend preview is not a payment entitlement and must not be used as production purchase authorization.
 - Theme palettes belong to the shared catalog and apply through a single app-level data attribute with semantic CSS tokens, never through the current tab, so navigation and preview expiry keep every view synchronized.
 - Each catalog artwork has its own sky-only asset shared by its free and animated variants; secondary views and worship use that sky while home retains figures, rings and videos, keeping navigation and trial expiry coordinated.
-- Scanner uses a transparent fixed-aspect SVG stage with a brand-neutral body and clipped CSS scan effects driven by existing scan state; this preserves USB/demo diagnostics and exposes the selected page background.
+- Scanner uses a transparent fixed-aspect SVG stage with an orthographic overhead, brand-neutral cutaway showing seats, chassis and wheels, plus clipped CSS scan effects driven by existing scan state; this preserves USB/demo diagnostics and exposes the selected page background.
