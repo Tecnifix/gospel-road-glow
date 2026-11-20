@@ -28,3 +28,5 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Halo background videos share the image's stage and gauge coordinates, play muted in a loop only while animation is enabled, and retain the still image as a loading/error fallback to preserve dashboard alignment.
