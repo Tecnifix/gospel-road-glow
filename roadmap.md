@@ -1,4 +1,3 @@
-# Temas
 # Comercialização — telas iniciais
 - [x] Criar tela de licença/código sem liberar acesso fictício.
 - [x] Criar loja com coleção Premium e ampliação das artes.
