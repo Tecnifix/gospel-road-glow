@@ -26,6 +26,7 @@ export function Scanner() {
  const [msg,setMsg]=useState('');
  const [mode,setMode]=useState<'usb'|'demo'>('demo');
  const active=useRef<AbortController | null>(null);
+ const stage=useRef<HTMLDivElement | null>(null);
  const history=useScanHistory();
  useEffect(()=>()=>{active.current?.abort();},[]);
  const start = async (usb:boolean) => {
@@ -74,7 +75,7 @@ export function Scanner() {
   {view==='scan' ? <>
    <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_300px]">
     <div className="min-w-0">
-     <div className="relative aspect-video overflow-hidden" data-scan-state={state} data-scan-area={area} data-scan-severity={areaItem?.status ?? 'ok'}>
+     <div ref={stage} className="relative aspect-video overflow-hidden" data-scan-state={state} data-scan-area={area} data-scan-severity={areaItem?.status ?? 'ok'}>
       <ScannerVehicle activeArea={area}/>
       <div className="absolute top-2 left-2 right-2 flex justify-between gap-2 sm:top-4 sm:left-4 sm:right-4 text-sm">
        <span className="flex items-center gap-2 rounded-md bg-background/80 px-3 py-2 text-primary"><ScanLine size={16}/><span>{scanning?'EM CURSO':state==='done'?'CONCLUÍDO':'SCANNER'}</span></span>
@@ -101,7 +102,7 @@ export function Scanner() {
    </div>
    {record && <section className="space-y-4 border-t pt-4">
     <div className="flex flex-wrap items-center justify-between gap-2"><h2 className="text-lg font-bold">Resultado · {record.vehicle}</h2><span className="text-sm text-muted-foreground">{dateLabel(record.created_at)}</span></div>
-    <div className="grid gap-3 sm:grid-cols-2">{items.map(item=>{const Icon=ICONS[item.status];return <div key={item.key} className="rounded-lg border bg-card p-4 min-w-0"><Button variant="ghost" className={`h-auto w-full justify-between gap-3 whitespace-normal p-0 hover:bg-transparent ${COLORS[item.status]}`} onClick={()=>setFocused(item.key)} aria-label={`Destacar ${item.label}`}><span className="flex items-center gap-2 text-left"><Icon size={18} className="shrink-0"/>{item.label}</span><span className="font-bold text-right break-words">{item.value}</span></Button><p className={`mt-2 text-xs ${COLORS[item.status]}`}>{LABELS[item.status]}</p><p className="mt-1 text-sm text-muted-foreground">{itemExplanation(item)}</p>{item.key==='falhas' && item.status==='bad' && item.value.split(/,\s*/).map(code=><p key={code} className="mt-2 text-sm"><strong className="text-destructive">{code}</strong> · {explainDtc(code)}</p>)}</div>;})}</div>
+    <div className="grid gap-3 sm:grid-cols-2">{items.map(item=>{const Icon=ICONS[item.status];return <div key={item.key} className="rounded-lg border bg-card p-4 min-w-0"><Button variant="ghost" className={`h-auto w-full justify-between gap-3 whitespace-normal p-0 hover:bg-transparent ${COLORS[item.status]}`} onClick={()=>{setFocused(item.key);stage.current?.scrollIntoView({block:'center'});}} aria-label={`Destacar ${item.label}`}><span className="flex items-center gap-2 text-left"><Icon size={18} className="shrink-0"/>{item.label}</span><span className="font-bold text-right break-words">{item.value}</span></Button><p className={`mt-2 text-xs ${COLORS[item.status]}`}>{LABELS[item.status]}</p><p className="mt-1 text-sm text-muted-foreground">{itemExplanation(item)}</p>{item.key==='falhas' && item.status==='bad' && item.value.split(/,\s*/).map(code=><p key={code} className="mt-2 text-sm"><strong className="text-destructive">{code}</strong> · {explainDtc(code)}</p>)}</div>;})}</div>
     {prior && <Comparison current={record} previous={prior}/>}
     {!history.savedIds.has(record.id) && <div className="flex flex-wrap items-center gap-2"><p className="text-sm text-muted-foreground">Leitura disponível nesta sessão. Ainda não guardada na conta.</p>{history.user && <Button variant="outline" disabled={history.saving} onClick={()=>history.save(record)}><Save size={16}/>Guardar leitura</Button>}</div>}
    </section>}

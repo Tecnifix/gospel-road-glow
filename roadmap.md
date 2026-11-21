@@ -25,7 +25,9 @@
 - [x] Conferir seleção gratuita, teste Premium e Scanner no celular e preservar a central horizontal.
 
 # Scanner mais útil
-- [ ] Explicar códigos de falha e distinguir alertas, dados indisponíveis e erros de conexão.
-- [ ] Destacar áreas do veículo e permitir cancelamento seguro sem demonstração automática no USB.
-- [ ] Salvar histórico privado com data, veículo e comparação de leituras.
-- [ ] Conferir demonstração, cancelamento, histórico e testes; leitura física depende do adaptador USB.
+- [x] Explicar códigos de falha e distinguir alertas, dados indisponíveis e erros de conexão.
+- [x] Destacar áreas do veículo e permitir cancelamento seguro sem demonstração automática no USB.
+- [x] Implementar histórico privado com data, veículo e comparação de leituras.
+- [x] Conferir demonstração, cancelamento, histórico de sessão, protocolo USB simulado, celular e testes.
+- [ ] Conferir salvamento e recuperação do histórico em conta real: aguardando entrada do usuário; não há contas disponíveis para sessão de teste.
+- [ ] Conferir leitura física USB: depende da central e do adaptador do usuário.
