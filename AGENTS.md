@@ -39,3 +39,4 @@ use the editor.
 - Scanner history is account-scoped in Cloud with RLS; unsigned readings stay in session memory only, and comparisons match vehicle label and source so demo and USB readings are never mixed.
 - Scanner code explanations and comparison logic live in a browser-safe shared module; descriptions are educational, not a definitive parts diagnosis.
 - Below 1024px, use bottom navigation and a contained 16:9 Halo stage above telemetry; mount only the visible stage to avoid duplicate video playback, and keep the full-screen stage on wider displays so artwork and gauge stay aligned without cropping mobile previews.
+- Commerce screens are separate leaf routes using a shared theme-aware shell; until a real license service and storefront exist, they must not persist codes, grant entitlements, fabricate prices, or link to a placeholder checkout.

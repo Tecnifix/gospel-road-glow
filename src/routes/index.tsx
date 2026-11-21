@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Home, Gauge, Palette, Sparkles, Play, Pause, SkipBack, SkipForward, Volume2, Droplet, Thermometer, Fuel, Battery, Copy, Check, Bluetooth, Wifi, Radio, Music, HandHeart, Flower2, X, ScanLine } from "lucide-react";
+import { Home, Gauge, Palette, Sparkles, Play, Pause, SkipBack, SkipForward, Volume2, Droplet, Thermometer, Fuel, Battery, Copy, Check, Bluetooth, Wifi, Radio, Music, HandHeart, Flower2, X, ScanLine, KeyRound, ShoppingBag } from "lucide-react";
 import { Scanner } from "@/components/Scanner";
 import { HaloDashboard, type DesignId } from "@/components/HaloDashboard";
 import { ThemeGallery } from "@/components/ThemeGallery";
@@ -223,6 +223,10 @@ function App() {
           <p className="hidden xl:block font-script text-3xl text-foreground/90">Deus guia, cuida e abençoa!</p>
           <div className="flex shrink-0 items-center gap-1 lg:gap-4 text-xl"><Button variant="ghost" onClick={() => setWorship(true)} aria-label="Modo Adoração" className="glass h-10 w-10 lg:w-auto rounded-lg p-2 lg:px-3 text-base flex items-center gap-2 text-primary"><Flower2 size={18} /><span className="hidden lg:inline">Modo Adoração</span></Button><Button variant="ghost" aria-label="Bênção da viagem" onClick={() => setBlessing(PRAYERS[Math.floor(Math.random() * PRAYERS.length)] ?? null)} className="h-10 w-10 p-2 text-primary"><HandHeart size={22} /></Button><Bluetooth size={20} className="hidden lg:block" /><Wifi size={20} className="hidden lg:block" /><span className="hidden lg:inline font-display">{now ? now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "--:--"}</span></div>
         </header>
+        <nav aria-label="Licença e loja" className="mt-2 flex justify-end gap-2 shrink-0">
+          <Button asChild variant="outline" size="sm"><Link to="/ativacao"><KeyRound />Ativação</Link></Button>
+          <Button asChild variant="outline" size="sm"><Link to="/loja"><ShoppingBag />Loja</Link></Button>
+        </nav>
 
         {(remaining > 0 || notice) && <div role="status" className="mt-3 shrink-0 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-lg border bg-background/95 px-4 py-2 text-sm">
           <span>{remaining > 0 ? `Teste Premium · ${Math.floor(Math.ceil(remaining / 1000) / 60)}:${String(Math.ceil(remaining / 1000) % 60).padStart(2, "0")}` : notice}</span>

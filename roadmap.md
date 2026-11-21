@@ -1,4 +1,10 @@
 # Temas
+# Comercialização — telas iniciais
+- [x] Criar tela de licença/código sem liberar acesso fictício.
+- [x] Criar loja com coleção Premium e ampliação das artes.
+- [ ] Vincular site de compra e QR Code: aguardando criação do site pela usuária.
+
+# Temas existentes
 - [x] Reunir todos os fundos e restaurar o tema anterior dos anjos.
 - [x] Separar estáticos gratuitos e animados Premium na seção Temas.
 - [x] Implementar teste de cinco minutos com retorno automático ao tema gratuito.
