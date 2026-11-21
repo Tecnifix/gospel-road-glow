@@ -14,6 +14,88 @@ export type Database = {
   }
   public: {
     Tables: {
+      device_licenses: {
+        Row: {
+          activation_code: string
+          created_at: string
+          device_id: string
+          id: string
+          issued_by: string
+          key_id: string
+          payload: Json
+        }
+        Insert: {
+          activation_code: string
+          created_at?: string
+          device_id: string
+          id: string
+          issued_by: string
+          key_id: string
+          payload: Json
+        }
+        Update: {
+          activation_code?: string
+          created_at?: string
+          device_id?: string
+          id?: string
+          issued_by?: string
+          key_id?: string
+          payload?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "device_licenses_key_id_fkey"
+            columns: ["key_id"]
+            isOneToOne: false
+            referencedRelation: "license_verification_keys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      license_signing_keys: {
+        Row: {
+          encrypted_private_key: string
+          encryption_iv: string
+          key_id: string
+        }
+        Insert: {
+          encrypted_private_key: string
+          encryption_iv: string
+          key_id: string
+        }
+        Update: {
+          encrypted_private_key?: string
+          encryption_iv?: string
+          key_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "license_signing_keys_key_id_fkey"
+            columns: ["key_id"]
+            isOneToOne: true
+            referencedRelation: "license_verification_keys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      license_verification_keys: {
+        Row: {
+          created_at: string
+          id: string
+          public_jwk: Json
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          public_jwk: Json
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          public_jwk?: Json
+        }
+        Relationships: []
+      }
       scanner_history: {
         Row: {
           created_at: string
@@ -41,15 +123,39 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -176,6 +282,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const

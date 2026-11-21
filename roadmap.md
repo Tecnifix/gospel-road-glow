@@ -1,4 +1,7 @@
 # Comercialização — telas iniciais
+- [ ] Implementar licença assinada offline vinculada à instalação e gerador protegido.
+- [ ] Autorizar conta da Ana e conferir emissão real: aguardando e-mail da conta.
+- [ ] Entrega totalmente offline e vínculo físico: dependem de empacotamento e teste na central.
 - [x] Criar tela de licença/código sem liberar acesso fictício.
 - [x] Criar loja com coleção Premium e ampliação das artes.
 - [ ] Vincular site de compra e QR Code: aguardando criação do site pela usuária.

@@ -8,6 +8,13 @@
       "when": 1795299557934,
       "tag": "0000_scanner_history",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1795303977089,
+      "tag": "0001_offline_device_licenses",
+      "breakpoints": true
     }
   ]
 }
