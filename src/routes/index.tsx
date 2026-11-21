@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Home, Gauge, Palette, Sparkles, Play, Pause, SkipBack, SkipForward, Volume2, Droplet, Thermometer, Fuel, Battery, Copy, Check, Bluetooth, Wifi, Radio, Music, HandHeart, Flower2, X, ScanLine, KeyRound, ShoppingBag } from "lucide-react";
+import { Home, Gauge, Palette, Play, Pause, SkipBack, SkipForward, Volume2, Droplet, Thermometer, Fuel, Battery, Bluetooth, Wifi, Radio, Music, HandHeart, Flower2, X, ScanLine, KeyRound, ShoppingBag } from "lucide-react";
 import { Scanner } from "@/components/Scanner";
 import { HaloDashboard, type DesignId } from "@/components/HaloDashboard";
 import { ThemeGallery } from "@/components/ThemeGallery";
@@ -74,13 +74,6 @@ function speak(text: string) {
   const v = window.speechSynthesis.getVoices().find((x) => x.lang.startsWith("pt")); if (v) u.voice = v;
   window.speechSynthesis.speak(u);
 }
-const PROMPTS: [string, string][] = [
-  ["Fundo estático — Jesus", "Wallpaper cinematográfico 16:9 para central multimídia automotiva, silhueta de Jesus Cristo de braços abertos no alto de um monte ao nascer do sol, raios de luz divina dourados, nuvens volumosas, lado esquerdo e bordas escuras para sobrepor velocímetro e widgets, sem texto, ultra detalhado, 4K."],
-  ["Fundo estático — Anjo", "Wallpaper 16:9 para painel de carro, anjo majestoso de asas brancas luminosas protegendo uma estrada vazia à noite, luz azul e dourada, estrelas, espaço livre no centro para velocímetro circular, sem texto, estilo cinematográfico, 4K."],
-  ["Vídeo em loop (Flow / Veo)", "Vídeo em loop perfeito de 8 segundos, câmera fixa. Silhueta de Jesus de braços abertos no monte ao nascer do sol; raios de luz pulsam suavemente, nuvens se movem devagar, partículas douradas sobem. Sem cortes, sem texto. Termina no mesmo enquadramento do início. Áudio: nenhum."],
-  ["Vídeo em loop — Anjo na estrada", "Loop de 8 segundos, câmera fixa. Anjo de asas brancas sobre a rodovia à noite, asas se movendo lentamente, faróis distantes passando, estrelas cintilando, brilho dourado pulsando. Sem texto, sem cortes, final igual ao início."],
-  ["Interface completa (referência)", "Tela de central multimídia automotiva 1280x720 tema gospel dourado: logo 'AdoraDrive – Fé em cada trajeto', relógio grande, versículo do dia, velocímetro circular neon dourado com RPM, cards de temperatura do motor, pressão do óleo, combustível e bateria em vidro fosco, player de louvor, barra lateral com ícones, fundo com cruz ao pôr do sol."],
-];
 
 function useTelemetry() {
   const [t, setT] = useState({ speed: 0, rpm: 800, oil: 85, engine: 88, fuel: 72, battery: 13.8, oilPress: 3.2 });
@@ -134,7 +127,7 @@ function Stat({ icon: Icon, label, value, unit, pct }: { icon: typeof Droplet; l
 
 function App() {
   const isMobile = useIsMobile(1024);
-  const [tab, setTab] = useState<"home" | "cockpit" | "louvor" | "scanner" | "temas" | "prompts">("home");
+  const [tab, setTab] = useState<"home" | "cockpit" | "louvor" | "scanner" | "temas">("home");
   const { activeTheme, remaining, choose, stopTrial, notice } = useThemeSelection();
   const animated = activeTheme.premium;
   const design = activeTheme.design;
@@ -148,7 +141,6 @@ function App() {
   const [blessing, setBlessing] = useState<string | null>(null);
   const audio = useRef<HTMLAudioElement | null>(null);
   const [vol, setVol] = useState(60);
-  const [copied, setCopied] = useState(-1);
   const tel = useTelemetry();
 
   useEffect(() => {
@@ -193,7 +185,7 @@ function App() {
     </div>
   );
   const particles = useMemo(() => Array.from({ length: 24 }, (_, i) => ({ left: (i * 37) % 100, dur: 8 + (i % 7) * 2, delay: (i % 9) * 1.3 })), []);
-  const nav = [["home", Home, "Início"], ["cockpit", Gauge, "Cockpit"], ["louvor", Music, "Louvor"], ["scanner", ScanLine, "Scanner"], ["temas", Palette, "Temas"], ["prompts", Sparkles, "Prompts"]] as const;
+  const nav = [["home", Home, "Início"], ["cockpit", Gauge, "Cockpit"], ["louvor", Music, "Louvor"], ["scanner", ScanLine, "Scanner"], ["temas", Palette, "Temas"]] as const;
 
   return (
     <div className="adora-theme relative h-screen w-full overflow-hidden bg-background text-foreground" data-theme={activeTheme.palette}>
@@ -330,18 +322,6 @@ function App() {
 
           {tab === "temas" && <ThemeGallery activeId={activeTheme.id} onSelect={(id) => { choose(id); setTab("home"); }} />}
 
-          {tab === "prompts" && (
-            <div className="grid lg:grid-cols-2 gap-4">
-              {PROMPTS.map(([title, text], i) => (
-                <div key={title} className="glass min-w-0 rounded-lg p-3 sm:p-4">
-                  <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3"><h3 className="min-w-0 text-primary font-display text-sm">{title}</h3>
-                    <Button variant="ghost" onClick={() => { navigator.clipboard.writeText(text); setCopied(i); setTimeout(() => setCopied(-1), 1500); }} className="flex items-center gap-1 text-sm">{copied === i ? <Check size={16} /> : <Copy size={16} />}{copied === i ? "Copiado" : "Copiar"}</Button>
-                  </div>
-                  <p className="mt-2 text-muted-foreground">{text}</p>
-                </div>
-              ))}
-            </div>
-          )}
         </section>
       </main>
 
