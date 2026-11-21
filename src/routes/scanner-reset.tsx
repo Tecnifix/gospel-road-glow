@@ -1,0 +1,11 @@
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { useEffect,useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+export const Route=createFileRoute('/scanner-reset')({head:()=>({meta:[{title:'AdoraDrive — Recuperar acesso ao histórico'},{name:'description',content:'Recupere sua senha para acessar seu histórico privado do Scanner AdoraDrive.'},{property:'og:title',content:'AdoraDrive — Recuperar acesso'},{property:'og:description',content:'Recuperação segura de acesso ao histórico do Scanner.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary'}]}),component:ResetPassword});
+function ResetPassword() {
+ const [ready,setReady]=useState(false);const [message,setMessage]=useState('');const [busy,setBusy]=useState(false);
+ useEffect(()=>{void supabase.auth.getSession().then(({data})=>setReady(!!data.session));const {data}=supabase.auth.onAuthStateChange((_e,s)=>setReady(!!s));return ()=>data.subscription.unsubscribe();},[]);
+ return <main className="mx-auto flex min-h-dvh max-w-md flex-col justify-center gap-4 px-6"><h1 className="text-2xl">AdoraDrive · Nova senha</h1>{ready?<form className="grid gap-3" onSubmit={async e=>{e.preventDefault();setBusy(true);const f=new FormData(e.currentTarget);const password=String(f.get('password'));if(password!==f.get('confirm')){setMessage('As senhas não coincidem.');setBusy(false);return;}try{const {error}=await supabase.auth.updateUser({password});setMessage(error?'Não foi possível alterar a senha. Solicite outro link.':'Senha alterada. Você pode voltar ao Scanner.');}catch{setMessage('Sem conexão. Tente novamente.');}finally{setBusy(false);}}}><label>Nova senha<Input name="password" type="password" required minLength={8} autoComplete="new-password"/></label><label>Confirmar senha<Input name="confirm" type="password" required minLength={8} autoComplete="new-password"/></label><Button disabled={busy}>Salvar senha</Button></form>:<p>Abra o link de recuperação recebido por email. Se expirou, solicite outro no Scanner.</p>}<p role="status">{message}</p><Link to="/" className="text-primary underline">Voltar ao AdoraDrive</Link></main>;
+}

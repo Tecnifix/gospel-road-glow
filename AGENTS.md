@@ -35,4 +35,7 @@ use the editor.
 - Theme palettes belong to the shared catalog and apply through a single app-level data attribute with semantic CSS tokens, never through the current tab, so navigation and preview expiry keep every view synchronized.
 - Each catalog artwork has its own sky-only asset shared by its free and animated variants; secondary views and worship use that sky while home retains figures, rings and videos, keeping navigation and trial expiry coordinated.
 - Scanner uses a transparent fixed-aspect SVG stage with an orthographic overhead, brand-neutral cutaway showing seats, chassis and wheels, plus clipped CSS scan effects driven by existing scan state; this preserves USB/demo diagnostics and exposes the selected page background.
+- Scanner transport supports aborts and treats missing PIDs separately from connection errors; USB failures never fall back to demo so fictitious results cannot be mistaken for vehicle readings.
+- Scanner history is account-scoped in Cloud with RLS; unsigned readings stay in session memory only, and comparisons match vehicle label and source so demo and USB readings are never mixed.
+- Scanner code explanations and comparison logic live in a browser-safe shared module; descriptions are educational, not a definitive parts diagnosis.
 - Below 1024px, use bottom navigation and a contained 16:9 Halo stage above telemetry; mount only the visible stage to avoid duplicate video playback, and keep the full-screen stage on wider displays so artwork and gauge stay aligned without cropping mobile previews.

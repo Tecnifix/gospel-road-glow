@@ -3,7 +3,7 @@ import { useId } from "react";
 const SHELL = "M410 65Q500 40 590 65Q611 73 616 108L628 192L628 419Q623 488 590 505Q500 525 410 505Q377 488 372 419L372 192L384 108Q389 73 410 65Z";
 
 /** Orthographic overhead cutaway, in the scanner's shared 1000 × 563 stage. */
-export function ScannerVehicle() {
+export function ScannerVehicle({ activeArea = "" }: { activeArea?: string }) {
   const id = useId().replaceAll(":", "");
   return (
     <svg viewBox="0 0 1000 563" className="scanner-vehicle absolute inset-0 h-full w-full text-primary" role="img" aria-label="Carro visto de cima, com carroceria transparente, quatro rodas, bancos e estrutura interna visíveis">
@@ -62,6 +62,12 @@ export function ScannerVehicle() {
           <rect x="365" y="48" width="270" height="66" fill={`url(#${id}-beam)`} />
           <path d="M365 114H635" stroke="currentColor" strokeWidth="3" />
         </g></g>
+        <g className="scanner-area-highlight" aria-hidden="true">
+          {(activeArea === "motor" || activeArea === "falhas") && <rect x="436" y="91" width="128" height="73" rx="9" />}
+          {activeArea === "oleo" && <circle cx="500" cy="137" r="28" />}
+          {activeArea === "bateria" && <rect x="401" y="96" width="37" height="56" rx="5" />}
+          {activeArea === "comb" && <rect x="445" y="451" width="110" height="28" rx="6" />}
+        </g>
         <g className="scanner-body-nodes" fill="currentColor" stroke="none">
           <circle cx="500" cy="128" r="5" /><circle cx="444" cy="224" r="5" /><circle cx="500" cy="319" r="5" /><circle cx="500" cy="424" r="5" />
         </g>

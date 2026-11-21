@@ -23,3 +23,9 @@
 - [x] Adaptar navegação, painel e demais telas sem cortes ou sobreposição.
 - [x] Mostrar a arte completa e permitir ampliar os temas antes de escolher.
 - [x] Conferir seleção gratuita, teste Premium e Scanner no celular e preservar a central horizontal.
+
+# Scanner mais útil
+- [ ] Explicar códigos de falha e distinguir alertas, dados indisponíveis e erros de conexão.
+- [ ] Destacar áreas do veículo e permitir cancelamento seguro sem demonstração automática no USB.
+- [ ] Salvar histórico privado com data, veículo e comparação de leituras.
+- [ ] Conferir demonstração, cancelamento, histórico e testes; leitura física depende do adaptador USB.

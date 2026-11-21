@@ -79,6 +79,11 @@
 @keyframes spin { to { transform: rotate(360deg) } }
 .halo-rays { background: repeating-conic-gradient(from 0deg, color-mix(in oklch, var(--primary) 45%, transparent) 0deg 2deg, transparent 2deg 15deg); mask-image: radial-gradient(circle, transparent 62%, black 66%, transparent 74%); animation: spin var(--spin) linear infinite; opacity: calc(0.3 + var(--k) * 0.7); mix-blend-mode: screen; }
 .scanner-vehicle { filter: drop-shadow(0 0 6px var(--glass-shadow)); }
+.scanner-area-highlight { fill: var(--primary); fill-opacity: .25; stroke: var(--primary); stroke-width: 4; }
+[data-scan-severity="bad"] .scanner-area-highlight { fill: var(--destructive); stroke: var(--destructive); }
+[data-scan-severity="warn"] .scanner-area-highlight { fill: var(--warning); stroke: var(--warning); }
+[data-scan-severity="unavailable"] .scanner-area-highlight { fill: var(--muted-foreground); stroke: var(--muted-foreground); }
+.scanner-google { --google-background: #131314; --google-border: #8E918F; --google-foreground: #E3E3E3; background: var(--google-background); color: var(--google-foreground); border-color: var(--google-border); }
 .scanner-glass-light { stop-color: var(--primary); stop-opacity: .16; }
 .scanner-glass-clear { stop-color: var(--primary); stop-opacity: .025; }
 .scanner-body-sweep, .scanner-body-nodes { display: none; }
