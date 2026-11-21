@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AtivacaoRouteImport } from './routes/ativacao'
+import { Route as LicencasRouteImport } from './routes/licencas'
 import { Route as LojaRouteImport } from './routes/loja'
 import { Route as ScannerResetRouteImport } from './routes/scanner-reset'
 
@@ -22,6 +23,11 @@ const IndexRoute = IndexRouteImport.update({
 const AtivacaoRoute = AtivacaoRouteImport.update({
   id: '/ativacao',
   path: '/ativacao',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LicencasRoute = LicencasRouteImport.update({
+  id: '/licencas',
+  path: '/licencas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LojaRoute = LojaRouteImport.update({
@@ -38,12 +44,14 @@ const ScannerResetRoute = ScannerResetRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ativacao': typeof AtivacaoRoute
+  '/licencas': typeof LicencasRoute
   '/loja': typeof LojaRoute
   '/scanner-reset': typeof ScannerResetRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ativacao': typeof AtivacaoRoute
+  '/licencas': typeof LicencasRoute
   '/loja': typeof LojaRoute
   '/scanner-reset': typeof ScannerResetRoute
 }
@@ -51,20 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/ativacao': typeof AtivacaoRoute
+  '/licencas': typeof LicencasRoute
   '/loja': typeof LojaRoute
   '/scanner-reset': typeof ScannerResetRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ativacao' | '/loja' | '/scanner-reset'
+  fullPaths: '/' | '/ativacao' | '/licencas' | '/loja' | '/scanner-reset'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ativacao' | '/loja' | '/scanner-reset'
-  id: '__root__' | '/' | '/ativacao' | '/loja' | '/scanner-reset'
+  to: '/' | '/ativacao' | '/licencas' | '/loja' | '/scanner-reset'
+  id: '__root__' | '/' | '/ativacao' | '/licencas' | '/loja' | '/scanner-reset'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AtivacaoRoute: typeof AtivacaoRoute
+  LicencasRoute: typeof LicencasRoute
   LojaRoute: typeof LojaRoute
   ScannerResetRoute: typeof ScannerResetRoute
 }
@@ -83,6 +93,13 @@ declare module '@tanstack/react-router' {
       path: '/ativacao'
       fullPath: '/ativacao'
       preLoaderRoute: typeof AtivacaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/licencas': {
+      id: '/licencas'
+      path: '/licencas'
+      fullPath: '/licencas'
+      preLoaderRoute: typeof LicencasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/loja': {
@@ -105,6 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AtivacaoRoute: AtivacaoRoute,
+  LicencasRoute: LicencasRoute,
   LojaRoute: LojaRoute,
   ScannerResetRoute: ScannerResetRoute,
 }

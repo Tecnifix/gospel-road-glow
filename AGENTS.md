@@ -39,4 +39,7 @@ use the editor.
 - Scanner history is account-scoped in Cloud with RLS; unsigned readings stay in session memory only, and comparisons match vehicle label and source so demo and USB readings are never mixed.
 - Scanner code explanations and comparison logic live in a browser-safe shared module; descriptions are educational, not a definitive parts diagnosis.
 - Below 1024px, use bottom navigation and a contained 16:9 Halo stage above telemetry; mount only the visible stage to avoid duplicate video playback, and keep the full-screen stage on wider displays so artwork and gauge stay aligned without cropping mobile previews.
-- Commerce screens are separate leaf routes using a shared theme-aware shell; until a real license service and storefront exist, they must not persist codes, grant entitlements, fabricate prices, or link to a placeholder checkout.
+- Commerce screens are separate leaf routes using a shared theme-aware shell; never fabricate prices or checkout links, and application licenses do not grant Premium theme purchases.
+- Offline application licenses use ECDSA signatures and a nonextractable installation key in IndexedDB; reverify signatures on load, never treat local flags as authorization, and do not claim a browser identity is a physical hardware identifier.
+- License issuance requires authenticated server-side role verification before privileged imports; only encrypted signing keys persist in Cloud, key-pair installation is atomic, and repeated issuance for a device recovers its original license.
+- Offline verification requires public verification keys downloaded over the configured Cloud connection; it is not an offline installer or DRM, and cached client state is not a production payment entitlement.

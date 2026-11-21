@@ -15,6 +15,13 @@
       "when": 1795303977089,
       "tag": "0001_offline_device_licenses",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795304199865,
+      "tag": "0002_atomic_signing_key_install",
+      "breakpoints": true
     }
   ]
 }

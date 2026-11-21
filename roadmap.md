@@ -1,5 +1,6 @@
 # Comercialização — telas iniciais
-- [ ] Implementar licença assinada offline vinculada à instalação e gerador protegido.
+- [x] Implementar licença assinada offline vinculada à instalação e gerador protegido.
+- [x] Conferir ativação offline preparada, restauração, recusa em outra instalação e celular com assinatura temporária de teste; 23 testes passam.
 - [ ] Autorizar conta da Ana e conferir emissão real: aguardando e-mail da conta.
 - [ ] Entrega totalmente offline e vínculo físico: dependem de empacotamento e teste na central.
 - [x] Criar tela de licença/código sem liberar acesso fictício.

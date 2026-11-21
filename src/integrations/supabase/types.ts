@@ -153,6 +153,15 @@ export type Database = {
         }
         Returns: boolean
       }
+      install_license_signing_key: {
+        Args: {
+          p_encrypted: string
+          p_iv: string
+          p_key_id: string
+          p_public_jwk: Json
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "user"
