@@ -60,9 +60,9 @@ function Activation() {
     <div className="mt-5 flex items-start gap-3 border-y py-5 text-muted-foreground"><CircleAlert className="mt-1 size-5 shrink-0 text-chart-4" /><div className="grid gap-3">
       {!verifierReady && ready && <p>Emissor ainda não preparado ou verificador não baixado. Após a primeira emissão, abra esta tela com internet para preparar a conferência offline.</p>}
       <p>A licença corresponde a esta instalação do navegador, não ao número de série físico da central. O aplicativo completo para instalação e abertura offline ainda está em preparação.</p>
-      <p>Os temas gratuitos continuam disponíveis. Esta licença não libera compras de temas Premium; o teste de cinco minutos permanece.</p>
+      <p>Todos os temas, estáticos e animados, são gratuitos e sem limite de tempo. A licença continua necessária para abrir o aplicativo.</p>
     </div></div>
-    <Button asChild variant="outline" className="mt-6 min-h-11"><Link to="/loja"><ShoppingBag />Ver coleção Premium</Link></Button>
+    <Button asChild variant="outline" className="mt-6 min-h-11"><Link to="/loja"><ShoppingBag />Ver temas gratuitos</Link></Button>
     <Button asChild variant="ghost" className="mt-3 min-h-11"><Link to="/licencas"><LockKeyhole />Área de emissão</Link></Button>
   </div></ProductScreen>;
 }

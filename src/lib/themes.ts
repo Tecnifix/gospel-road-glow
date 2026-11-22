@@ -5,7 +5,6 @@ import pomba from "@/assets/fundo-pomba.jpg.asset.json";
 import { DESIGNS, type DesignId } from "@/components/HaloDashboard";
 import { CLASSIC_SKIES, DESIGN_SKIES } from "@/lib/theme-skies";
 
-export const TRIAL_DURATION_MS = 5 * 60 * 1000;
 export type ThemePalette = "gold" | "sky" | "amber" | "teal" | "copper";
 const designPalettes: Record<DesignId, ThemePalette> = {
   anjos: "gold",
@@ -23,6 +22,7 @@ export type ThemeOption = {
   design: DesignId | "classico";
   background: string;
   premium: boolean;
+  animated: boolean;
   palette: ThemePalette;
 };
 const backgrounds: { id: string; name: string; img: string; sky: string; palette: ThemePalette }[] = [
@@ -32,31 +32,23 @@ const backgrounds: { id: string; name: string; img: string; sky: string; palette
   { id: "pomba", name: "Espírito Santo", img: pomba.url, sky: CLASSIC_SKIES.pomba, palette: "teal" },
 ];
 export const THEME_CATALOG: ThemeOption[] = [
-  ...backgrounds.map((t) => ({ ...t, id: `free-classico-${t.id}`, design: "classico" as const, background: t.id, premium: false })),
-  ...DESIGNS.map((d) => ({ id: `free-${d.id}`, name: d.name, img: d.img, sky: DESIGN_SKIES[d.id], design: d.id, background: "jesus", premium: false, palette: designPalettes[d.id] })),
-  ...DESIGNS.map((d) => ({ id: `premium-${d.id}`, name: d.name, img: d.img, sky: DESIGN_SKIES[d.id], design: d.id, background: "jesus", premium: true, palette: designPalettes[d.id] })),
-  ...backgrounds.map((t) => ({ ...t, id: `premium-classico-${t.id}`, design: "classico" as const, background: t.id, premium: true })),
+  ...backgrounds.map((t) => ({ ...t, id: `free-classico-${t.id}`, design: "classico" as const, background: t.id, premium: false, animated: false })),
+  ...DESIGNS.map((d) => ({ id: `free-${d.id}`, name: d.name, img: d.img, sky: DESIGN_SKIES[d.id], design: d.id, background: "jesus", premium: false, animated: false, palette: designPalettes[d.id] })),
+  ...DESIGNS.map((d) => ({ id: `premium-${d.id}`, name: d.name, img: d.img, sky: DESIGN_SKIES[d.id], design: d.id, background: "jesus", premium: false, animated: true, palette: designPalettes[d.id] })),
+  ...backgrounds.map((t) => ({ ...t, id: `premium-classico-${t.id}`, design: "classico" as const, background: t.id, premium: false, animated: true })),
 ];
 export const DEFAULT_FREE_THEME = "free-anjos-nuvens";
-export type ThemeTrial = { themeId: string; endsAt: number };
-export function startThemeTrial(themeId: string, now: number): ThemeTrial | null {
-  if (!THEME_CATALOG.some((t) => t.id === themeId && t.premium)) return null;
-  return { themeId, endsAt: now + TRIAL_DURATION_MS };
+export function resolveTheme(id: string): ThemeOption {
+  const theme = THEME_CATALOG.find((t) => t.id === id) ?? THEME_CATALOG.find((t) => t.id === DEFAULT_FREE_THEME);
+  if (!theme) throw new Error("A coleção precisa de um tema gratuito.");
+  return theme;
 }
-export function remainingTrialMs(trial: ThemeTrial | null, now: number) {
-  return trial ? Math.max(0, trial.endsAt - now) : 0;
-}
-export function resolveTheme(freeId: string, trial: ThemeTrial | null, now: number): ThemeOption {
-  const free = THEME_CATALOG.find((t) => t.id === freeId && !t.premium) ?? THEME_CATALOG[0];
-  if (!free) throw new Error("A coleção precisa de um tema gratuito.");
-  if (remainingTrialMs(trial, now) > 0) return THEME_CATALOG.find((t) => t.id === trial?.themeId && t.premium) ?? free;
-  return free;
-}
-export function readTrial(raw: string | null): ThemeTrial | null {
+// Preserve an old preview as a permanent selection; its deadline no longer applies.
+export function readLegacyTrialTheme(raw: string | null): string | null {
   try {
     const value: unknown = JSON.parse(raw ?? "null");
-    if (value && typeof value === "object" && "themeId" in value && "endsAt" in value && typeof value.themeId === "string" && typeof value.endsAt === "number" && Number.isFinite(value.endsAt) && THEME_CATALOG.some((t) => t.id === value.themeId && t.premium)) {
-      return { themeId: value.themeId, endsAt: value.endsAt };
+    if (value && typeof value === "object" && "themeId" in value && typeof value.themeId === "string" && THEME_CATALOG.some((t) => t.id === value.themeId)) {
+      return value.themeId;
     }
   } catch { /* Ignore an invalid local preview session. */ }
   return null;

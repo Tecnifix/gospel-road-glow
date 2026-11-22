@@ -147,8 +147,8 @@ function LicenseGate() {
 function App() {
   const isMobile = useIsMobile(1024);
   const [tab, setTab] = useState<"home" | "cockpit" | "louvor" | "scanner" | "temas">("home");
-  const { activeTheme, remaining, choose, stopTrial, notice } = useThemeSelection();
-  const animated = activeTheme.premium;
+  const { activeTheme, choose } = useThemeSelection();
+  const animated = activeTheme.animated;
   const design = activeTheme.design;
   const [now, setNow] = useState<Date | null>(null);
   const [verse, setVerse] = useState(0);
@@ -200,7 +200,7 @@ function App() {
   const picker = (
     <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3">
       <Button variant="outline" onClick={() => setTab("temas")}><Palette />Temas</Button>
-      <span className="min-w-0 text-sm text-primary">{activeTheme.name} · {animated ? "Premium" : "Free"}</span>
+      <span className="min-w-0 text-sm text-primary">{activeTheme.name} · {animated ? "Animado" : "Estático"} · Grátis</span>
     </div>
   );
   const particles = useMemo(() => Array.from({ length: 24 }, (_, i) => ({ left: (i * 37) % 100, dur: 8 + (i % 7) * 2, delay: (i % 9) * 1.3 })), []);
@@ -238,11 +238,6 @@ function App() {
           <Button asChild variant="outline" size="sm"><Link to="/ativacao"><KeyRound />Ativação</Link></Button>
           <Button asChild variant="outline" size="sm"><Link to="/loja"><ShoppingBag />Loja</Link></Button>
         </nav>
-
-        {(remaining > 0 || notice) && <div role="status" className="mt-3 shrink-0 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-lg border bg-background/95 px-4 py-2 text-sm">
-          <span>{remaining > 0 ? `Teste Premium · ${Math.floor(Math.ceil(remaining / 1000) / 60)}:${String(Math.ceil(remaining / 1000) % 60).padStart(2, "0")}` : notice}</span>
-          {remaining > 0 && <Button variant="ghost" size="sm" onClick={stopTrial}><X />Encerrar teste</Button>}
-        </div>}
 
         <section className="app-content flex-1 min-h-0 min-w-0 mt-4 overflow-x-hidden overflow-y-auto pb-3 lg:pb-0">
           {halo && (
