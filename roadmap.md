@@ -1,4 +1,5 @@
 # Comercialização — telas iniciais
+- [x] Tornar todos os temas gratuitos, preservando animações e licença do aplicativo, sem prazo de teste.
 - [x] Implementar licença assinada offline vinculada à instalação e gerador protegido.
 - [x] Conferir ativação offline preparada, restauração, recusa em outra instalação e celular com assinatura temporária de teste; 23 testes passam.
 - [ ] Autorizar conta da Ana e conferir emissão real: aguardando e-mail da conta.
