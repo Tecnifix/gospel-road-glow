@@ -55,6 +55,7 @@ function Activation() {
       }} />
       <p role="status" aria-live="polite" className="min-h-6 break-words text-sm text-chart-4">{message}</p>
     </form>
+    {license && <Button asChild className="mt-3 min-h-12 w-full"><Link to="/">Abrir AdoraDrive</Link></Button>}
     {license && <p className="mt-3 text-sm text-muted-foreground">Emitida em {new Date(license.issuedAt).toLocaleDateString('pt-BR')} · Sem prazo de expiração.</p>}
     <div className="mt-5 flex items-start gap-3 border-y py-5 text-muted-foreground"><CircleAlert className="mt-1 size-5 shrink-0 text-chart-4" /><div className="grid gap-3">
       {!verifierReady && ready && <p>Emissor ainda não preparado ou verificador não baixado. Após a primeira emissão, abra esta tela com internet para preparar a conferência offline.</p>}

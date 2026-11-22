@@ -7,6 +7,8 @@ import { ThemeGallery } from "@/components/ThemeGallery";
 import { Button } from "@/components/ui/button";
 import { useThemeSelection } from "@/hooks/use-theme-selection";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useDeviceLicense } from "@/hooks/use-device-license";
+import { LoaderCircle, LockKeyhole } from "lucide-react";
 import b1 from "@/assets/bencao-1.mp3.asset.json";
 import b2 from "@/assets/bencao-2.mp3.asset.json";
 import b3 from "@/assets/bencao-3.mp3.asset.json";
@@ -25,7 +27,7 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: App,
+  component: LicenseGate,
 });
 
 const VERSES = [
@@ -122,6 +124,23 @@ function Stat({ icon: Icon, label, value, unit, pct }: { icon: typeof Droplet; l
       <div className="mt-2 text-2xl sm:text-3xl font-bold">{value}<span className="text-base text-muted-foreground ml-1">{unit}</span></div>
       <div className="mt-2 h-1.5 rounded-full bg-accent overflow-hidden"><div className="h-full bg-primary transition-all duration-500" style={{ width: `${Math.min(100, pct)}%` }} /></div>
     </div>
+  );
+}
+
+function LicenseGate() {
+  const { license, ready } = useDeviceLicense();
+  if (license) return <App />;
+  return (
+    <main className="adora-theme grid place-items-center bg-background p-6 text-foreground">
+      <div className="max-w-md text-center">
+        {ready ? <LockKeyhole className="mx-auto mb-5 size-12 text-primary" /> : <LoaderCircle className="mx-auto mb-5 size-12 animate-spin text-primary" />}
+        <h1 className="font-display text-2xl sm:text-3xl">{ready ? "Ative o AdoraDrive" : "Conferindo licença…"}</h1>
+        {ready && <>
+          <p className="mt-3 text-muted-foreground">Para usar o aplicativo nesta central, ative sua licença.</p>
+          <Button asChild className="mt-6 min-h-12"><Link to="/ativacao"><KeyRound />Ir para Ativação</Link></Button>
+        </>}
+      </div>
+    </main>
   );
 }
 
