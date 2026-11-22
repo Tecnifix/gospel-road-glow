@@ -1,3 +1,4 @@
+// @refresh reset
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Home, Gauge, Palette, Play, Pause, SkipBack, SkipForward, Volume2, Droplet, Thermometer, Fuel, Battery, Bluetooth, Wifi, Radio, Music, HandHeart, Flower2, X, ScanLine, KeyRound, ShoppingBag } from "lucide-react";

@@ -1,3 +1,5 @@
+// @refresh reset
+// Reset consumers on hot updates: legacy previews used a different hook layout.
 import { useEffect, useState } from "react";
 import { DEFAULT_FREE_THEME, THEME_CATALOG, readLegacyTrialTheme, resolveTheme } from "@/lib/themes";
 

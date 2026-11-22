@@ -1,3 +1,4 @@
+// @refresh reset
 import type { ReactNode } from 'react';
 import { Link } from '@tanstack/react-router';
 import { ArrowLeft, KeyRound, ShoppingBag } from 'lucide-react';
